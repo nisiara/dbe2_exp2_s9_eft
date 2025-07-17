@@ -40,10 +40,11 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.authorizeHttpRequests(authz -> authz
-				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").hasRole("DEVELOPER") 
+				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+				.requestMatchers("/api/developer").hasRole("DEVELOPER")
 				.requestMatchers("/api/authentication/login").permitAll()
 				.requestMatchers("/api/authentication/registro").hasRole("ADMIN") 
-				.requestMatchers("/api/user").hasRole("DEVELOPER") 
+				// .requestMatchers("/api/user").hasRole("DEVELOPER") 
 				// .anyRequest().authenticated()
 				.anyRequest().permitAll()
 			);

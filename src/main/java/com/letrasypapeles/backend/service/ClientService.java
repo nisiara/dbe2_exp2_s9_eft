@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.letrasypapeles.backend.dto.ClientDTO;
+import com.letrasypapeles.backend.dto.ClientRequest;
+import com.letrasypapeles.backend.dto.ClientResponse;
 import com.letrasypapeles.backend.entity.Client;
 import com.letrasypapeles.backend.entity.ERole;
 import com.letrasypapeles.backend.entity.Role;
@@ -29,18 +30,23 @@ public class ClientService {
     this.roleRepository = roleRepository;
   }
 
-  public List<Client> getClients() {
-    List<Client> clients = clientRepository.findAll();
-    return clients;
+  public List<ClientResponse> getAll() {
+    return clientRepository.findAll().stream()
+      .map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getFidelityPoints()))
+      .toList();
 	}
 
-	public Optional<Client> getById(Long id) {
-    return clientRepository.findById(id);
+	public ClientResponse getById(Long id) {
+    return clientRepository.findById(id)
+      .map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getFidelityPoints()))
+      .orElseThrow(() -> new RuntimeException("No existe Cliente con el id: " + id));
 	}
 
-  public Client create(ClientDTO clientDTO) {
-
-    if (clientRepository.existsByEmail(clientDTO.getEmail())) {
+  public ClientResponse create(ClientRequest clientRequest) {
+    if(clientRequest == null || clientRequest.getName() == null || clientRequest.getEmail() == null) {
+      throw new IllegalArgumentException("El cliente no puede ser nulo y debe contener nombre y email");
+    }
+    if (clientRepository.existsByEmail(clientRequest.getEmail())) {
       throw new IllegalArgumentException("El email ya está registrado");
     }
       
@@ -53,12 +59,15 @@ public class ClientService {
       throw new RuntimeException("El rol ADMIN no se encontró en la base de datos.");
     }
    
-    client.setName(clientDTO.getName());
-    client.setEmail(clientDTO.getEmail());
-    client.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
-    client.setFidelityPoints(clientDTO.getFidelityPoints());
+    client.setName(clientRequest.getName());
+    client.setEmail(clientRequest.getEmail());
+    client.setUsername(clientRequest.getUsername());
+    client.setPassword(passwordEncoder.encode(clientRequest.getPassword()));
+    client.setFidelityPoints(clientRequest.getFidelityPoints());
 
-    return clientRepository.save(client);
+    clientRepository.save(client);
+
+    return new ClientResponse(client.getName(), client.getEmail(), client.getFidelityPoints());
 
   }
 

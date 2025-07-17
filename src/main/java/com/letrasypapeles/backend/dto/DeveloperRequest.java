@@ -9,5 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeveloperRequest {
   private String name;
+  private String password;
   private String username;
+  private String position;
 }

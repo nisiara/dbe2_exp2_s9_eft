@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tbl_users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class BaseUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

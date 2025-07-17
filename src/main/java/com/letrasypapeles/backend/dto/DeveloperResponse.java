@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class DeveloperResponse {
   private String name;
   private String username;
+  private String position;
 }

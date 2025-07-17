@@ -21,9 +21,9 @@ Content-Type: application/json
 
 {
   "name": "nicolas",
+  "password": "password",
   "username": "nico",
-  "position": "frontend",
-  "password": "password"
+  "position": "frontend"
 }
 
 
@@ -66,3 +66,12 @@ Content-Type: application/json
 ### OBTENER TODOS LOS CARROS
 GET http://localhost:8080/api/carts/1
 Content-Type: application/json
+
+### LOGIN - OBTENER TOKEN
+POST http://localhost:8080/api/authentication/login
+Content-Type: application/json
+
+{
+  "username": "nico",
+  "password": "password"
+}
