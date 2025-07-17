@@ -1,6 +1,6 @@
 package com.letrasypapeles.backend.service;
 
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +18,20 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public List<User> obtenerTodos(){
+  public List<BaseUser> obtenerTodos(){
     return userRepository.findAll();
   }
 
-  public Optional<User> obtenerPorId(Long id){
+  public Optional<BaseUser> obtenerPorId(Long id){
     return userRepository.findById(id);
   }
 
-  public Optional<User> obtenerPorUsername(String username){
+  public Optional<BaseUser> obtenerPorUsername(String username){
     return userRepository.findByUsername(username);
   }
 
   public boolean eliminar(Long id) {
-		Optional<User> userToDelete = userRepository.findById(id);
+		Optional<BaseUser> userToDelete = userRepository.findById(id);
 		if(userToDelete.isPresent()){
 			userRepository.deleteById(id);
 			return true;

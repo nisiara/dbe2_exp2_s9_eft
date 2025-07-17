@@ -30,7 +30,7 @@ import com.letrasypapeles.backend.dto.AuthenticationDTO;
 import com.letrasypapeles.backend.dto.LoginDTO;
 import com.letrasypapeles.backend.dto.RegisterDTO;
 import com.letrasypapeles.backend.entity.Role;
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.RoleRepository;
 import com.letrasypapeles.backend.repository.UserRepository;
 import com.letrasypapeles.backend.security.jwt.JwtGenerator;
@@ -65,7 +65,7 @@ public class AuthenticationControllerTest {
 
     private LoginDTO loginDTO;
     private RegisterDTO registerDTO;
-    private User user;
+    private BaseUser user;
     private Role role;
 
     @BeforeEach
@@ -80,8 +80,8 @@ public class AuthenticationControllerTest {
       registerDTO.setName("Test User");
       registerDTO.setEmail("test@email.com");
 
-      user = new User();
-      user.setUsername("newuser");
+      user = new BaseUser();
+      //user.setUsername("newuser");
 
       role = new Role();
       // role.setName("CLIENTE");
@@ -117,7 +117,7 @@ public class AuthenticationControllerTest {
       when(passwordEncoder.encode(registerDTO.getPassword())).thenReturn("encoded-password");
       
       // when(roleRepository.findByRoleName("CLIENTE")).thenReturn(Optional.of(role));
-      when(userRepository.save(any(User.class))).thenReturn(user);
+      when(userRepository.save(any(BaseUser.class))).thenReturn(user);
 
       ResponseEntity<?> response = authenticationController.registro(registerDTO);
 
@@ -127,7 +127,7 @@ public class AuthenticationControllerTest {
       verify(userRepository).existsByUsername(registerDTO.getUsername());
       verify(passwordEncoder).encode(registerDTO.getPassword());
       // verify(roleRepository).findByRoleName("CLIENTE");
-      verify(userRepository).save(any(User.class));
+      verify(userRepository).save(any(BaseUser.class));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class AuthenticationControllerTest {
       assertEquals("El usuario ya existe", response.getBody());
       
       verify(userRepository).existsByUsername(registerDTO.getUsername());
-      verify(userRepository, never()).save(any(User.class));
+      verify(userRepository, never()).save(any(BaseUser.class));
     }
   
 }

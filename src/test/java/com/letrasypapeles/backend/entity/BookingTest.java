@@ -10,7 +10,7 @@ public class BookingTest {
 	public void testGettersAndSetters() {
 		Booking booking = new Booking();
 		Product product = new Product();
-		User user = new User();
+		BaseUser user = new BaseUser();
 		booking.setId(1L);
 		booking.setDateBooking(LocalDateTime.now());
 		booking.setStatus("Disponible");

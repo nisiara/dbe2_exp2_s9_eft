@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.service.UserService;
 
 @RestController
@@ -23,7 +23,7 @@ public class UserController {
   }
 	@PreAuthorize("hasRole('DEVELOPER')")
   @GetMapping
-  public List<User> obtenerTodos() {
+  public List<BaseUser> obtenerTodos() {
     return userService.obtenerTodos();
   }
   

@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,20 +26,20 @@ public class UserServiceTest {
   @InjectMocks
   private UserService userService;
 
-  private User user;
+  private BaseUser user;
 
   @BeforeEach
   public void setUp(){
-    user = User.builder()
+    user = BaseUser.builder()
 			.id(1L)
 			.name("Juanito Test")
-      .username("Juanin")
+      // .username("Juanin")
 			.build();
   }
 
   @Test
   public void testGetAllUsers(){
-    List<User> expected = List.of(user);
+    List<BaseUser> expected = List.of(user);
     when(userRepository.findAll()).thenReturn(expected);
 		assertEquals(expected, userService.obtenerTodos());
   }

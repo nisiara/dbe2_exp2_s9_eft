@@ -9,6 +9,7 @@ Content-Type: application/json
 
 {
   "name": "jose soto",
+  "username": "jose",
   "email": "jose.soto@correo.com",
   "password": "password",
   "fidelityPoints": 10
@@ -21,6 +22,7 @@ Content-Type: application/json
 {
   "name": "nicolas",
   "username": "nico",
+  "position": "frontend",
   "password": "password"
 }
 

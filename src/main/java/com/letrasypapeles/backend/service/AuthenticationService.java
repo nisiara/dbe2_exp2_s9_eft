@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letrasypapeles.backend.dto.RegisterDTO;
 import com.letrasypapeles.backend.entity.ERole;
 import com.letrasypapeles.backend.entity.Role;
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.RoleRepository;
 import com.letrasypapeles.backend.repository.UserRepository;
 
@@ -29,7 +29,7 @@ public class AuthenticationService {
   }
 
   @Transactional
-  public User registerUser(RegisterDTO registerDTO) {
+  public BaseUser registerUser(RegisterDTO registerDTO) {
     if (userRepository.existsByUsername(registerDTO.getUsername())) {
       throw new RuntimeException("El nombre de usuario ya está en uso");
     }
@@ -38,12 +38,12 @@ public class AuthenticationService {
         
     Set<Role> roles = getValidatedRoles(registerDTO.getRoles());
     
-    User user = new User();
+    BaseUser user = new BaseUser();
     user.setUsername(registerDTO.getUsername());
     user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
     user.setName(registerDTO.getName());
-    user.setEmail(registerDTO.getEmail());
-    user.setRoles(roles);
+    // user.setEmail(registerDTO.getEmail());
+    // user.setRoles(roles);
     
     return userRepository.save(user);
   }

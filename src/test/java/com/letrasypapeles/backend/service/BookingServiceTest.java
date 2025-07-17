@@ -1,6 +1,6 @@
 package com.letrasypapeles.backend.service;
 
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.entity.Product;
 import com.letrasypapeles.backend.entity.Booking;
 import com.letrasypapeles.backend.repository.ProductRepository;
@@ -34,13 +34,13 @@ public class BookingServiceTest {
 	@InjectMocks
 	private BookingService reservaService;
 
-	private User user;
+	private BaseUser user;
 	private Product producto;
 	private Booking reserva;
 
 	@BeforeEach
 	public void setUp(){
-		user = User.builder()
+		user = BaseUser.builder()
 			.id(1L)
 			.name("Juanito Test")
 			.build();

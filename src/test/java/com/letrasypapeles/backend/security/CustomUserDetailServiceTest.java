@@ -25,7 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 // import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.letrasypapeles.backend.entity.Role;
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +36,7 @@ public class CustomUserDetailServiceTest {
   @InjectMocks
   // private CustomUserDetailService customUserDetailService;
 
-  private User testUser;
+  private BaseUser testUser;
   private Role adminRole;
   private Role userRole;
 
@@ -51,9 +51,9 @@ public class CustomUserDetailServiceTest {
     userRole.setId(2L);
     // userRole.setName("USER");
 
-    testUser = new User();
+    testUser = new BaseUser();
     testUser.setId(1L);
-    testUser.setUsername("testuser");
+    //testUser.setUsername("testuser");
     testUser.setPassword("password123");
 
     List<Role> roles = new ArrayList<>();

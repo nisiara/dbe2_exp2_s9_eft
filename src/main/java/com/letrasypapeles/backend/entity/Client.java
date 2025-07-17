@@ -1,36 +1,30 @@
 package com.letrasypapeles.backend.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
-@NoArgsConstructor
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 
 @Entity
 @Table(name="tbl_clients")
-public class Client {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	private String name;
+@PrimaryKeyJoinColumn(name = "client_id")
+public class Client extends BaseUser {
 
 	@Column(unique = true)
 	private String email;
 
-	private String password;
-
 	private Integer fidelityPoints;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id", nullable = false)
-	private Role role;
+	public Client() {
+		super();
+	}
 
 }
 

@@ -6,28 +6,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
+@Builder
 
-@Table(name="tbl_bookings")
 @Entity
-public class Booking {
+@Table(name = "tbl_users")
+public class BaseUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private LocalDateTime dateBooking;
-	private String status;
+	private String password;
+	private String name;
+	private String username;
 
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private BaseUser user;
+	@ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_id", nullable = false)
+  private Role role;
 
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
 }

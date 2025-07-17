@@ -3,7 +3,7 @@ package com.letrasypapeles.backend.controller;
 import com.letrasypapeles.backend.dto.AuthenticationDTO;
 import com.letrasypapeles.backend.dto.LoginDTO;
 import com.letrasypapeles.backend.dto.RegisterDTO;
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.UserRepository;
 import com.letrasypapeles.backend.security.jwt.JwtGenerator;
 import com.letrasypapeles.backend.service.AuthenticationService;
@@ -58,7 +58,7 @@ public class AuthenticationController {
 	@PostMapping("/registro")
 	public ResponseEntity<?> registro(@RequestBody RegisterDTO registerDTO) {
 		try {
-			User user = authenticationService.registerUser(registerDTO);
+			BaseUser user = authenticationService.registerUser(registerDTO);
 			return new ResponseEntity<>(user, HttpStatus.CREATED);
 		} 
 		catch (IllegalArgumentException e) {

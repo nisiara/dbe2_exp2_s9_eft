@@ -2,7 +2,7 @@ package com.letrasypapeles.backend.entity;
 
 
 import com.letrasypapeles.backend.entity.Role;
-import com.letrasypapeles.backend.entity.User;
+import com.letrasypapeles.backend.entity.BaseUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
