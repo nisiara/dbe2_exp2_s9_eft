@@ -1,0 +1,66 @@
+### OBTENER TODOS LOS CLIENTES
+GET http://localhost:8080/api/client
+Content-Type: application/json
+
+
+### CREAR UN NUEVO CLIENTE -- TIENE ROL COMPRA
+POST http://localhost:8080/api/client
+Content-Type: application/json
+
+{
+  "name": "jose soto",
+  "email": "jose.soto@correo.com",
+  "password": "password",
+  "fidelityPoints": 10
+}
+
+### CREAR UN DEVELOPER -- TIENE ROL DEVELOPER
+POST http://localhost:8080/api/developer
+Content-Type: application/json
+
+{
+  "name": "nicolas",
+  "username": "nico",
+  "password": "password"
+}
+
+
+### OBTENER UN CLIENTE POR ID
+GET http://localhost:8080/api/client/1
+Content-Type: application/json  
+
+
+### ELIMINAR UN CLIENTE
+DELETE http://localhost:8080/api/client/1
+Content-Type: application/json
+
+### OBTENER TODOS LOS PRODUCTOS
+GET http://localhost:8080/api/product
+Content-Type: application/json
+
+### CREAR CARRO
+POST http://localhost:8080/api/carts
+Content-Type: application/json 
+
+{
+  "clientId": 1,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+
+### OBTENER TODAS LAS ORDENES
+GET http://localhost:8080/api/order
+Content-Type: application/json
+
+### OBTENER TODOS LOS CARROS
+GET http://localhost:8080/api/carts/1
+Content-Type: application/json
