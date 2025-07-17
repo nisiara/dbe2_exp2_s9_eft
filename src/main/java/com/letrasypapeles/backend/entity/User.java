@@ -2,16 +2,20 @@ package com.letrasypapeles.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 @Entity
 @Table(name = "tbl_users")
-public abstract class User {
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -20,8 +24,15 @@ public abstract class User {
 	private String password;
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id", nullable = false)
-	private Role role;
+	// @Column(unique = true)
+	private String email;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinTable(
+		name = "tbl_user_roles",
+		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+	)
+	private Set<Role> roles;
 
 }
