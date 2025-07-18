@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
-
 @RestController
 @RequestMapping("/api/developer")
 //@PreAuthorize("hasRole('DEVELOPER')")

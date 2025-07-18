@@ -17,10 +17,21 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-
 	private String name;
-	private String details;
+	private String description;
 	private double price;
 	private String sku;
+	private int stock;
+
+	public boolean hasStock(int quantity) {
+    return this.stock >= quantity;
+  }
+    
+	public void decreaseStock(int quantity) {
+		if (!hasStock(quantity)) {
+			throw new IllegalStateException("Stock insuficiente");
+		}
+		this.stock -= quantity;
+	}
 
 }

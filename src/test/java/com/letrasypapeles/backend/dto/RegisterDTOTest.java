@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 public class RegisterDTOTest {
 	@Test
 	public void testGettersAndSetters() {
-		RegisterDTO registerDTO = new RegisterDTO();
-		registerDTO.setUsername("username");
-		registerDTO.setPassword("password");
-		registerDTO.setName("nombre");
-		registerDTO.setEmail("email");
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("username");
+		authenticationRequest.setPassword("password");
+		authenticationRequest.setName("nombre");
+		authenticationRequest.setEmail("email");
 
-		Assertions.assertEquals("username", registerDTO.getUsername());
-		Assertions.assertEquals("password", registerDTO.getPassword());
+		Assertions.assertEquals("username", authenticationRequest.getUsername());
+		Assertions.assertEquals("password", authenticationRequest.getPassword());
 	}
 }

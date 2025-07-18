@@ -72,24 +72,24 @@ public class ProductController {
     }
   )
   @GetMapping
-  public ResponseEntity<CollectionModel<EntityModel<ProductResponse>>> getAllProducts() {
-    List<ProductResponse> products = productService.getAllProducts();
+  public ResponseEntity<CollectionModel<EntityModel<ProductResponse>>> getAll() {
+    List<ProductResponse> products = productService.getAll();
 
     List<EntityModel<ProductResponse>> productModels = products.stream()
       .map(productResponse -> {
           List<Link> links = new ArrayList<>();
-          links.add(linkTo(methodOn(ProductController.class).getProductById(productResponse.getId())).withSelfRel());
-          links.add(linkTo(methodOn(ProductController.class).updateProduct(productResponse.getId(), null)).withRel("update-product"));
+          links.add(linkTo(methodOn(ProductController.class).getById(productResponse.getId())).withSelfRel());
+          links.add(linkTo(methodOn(ProductController.class).update(productResponse.getId(), null)).withRel("update-product"));
           links.add(linkTo(methodOn(ProductController.class).delete(productResponse.getId())).withRel("delete-product"));
           links.add(linkTo(methodOn(ProductController.class).createProduct(null)).withRel("create-product"));
-          links.add(linkTo(methodOn(ProductController.class).getAllProducts()).withRel("all-products"));
+          links.add(linkTo(methodOn(ProductController.class).getAll()).withRel("all-products"));
 
             return EntityModel.of(productResponse, links);
         })
         .collect(Collectors.toList());
 
         CollectionModel<EntityModel<ProductResponse>> collectionModel = CollectionModel.of(productModels,
-            linkTo(methodOn(ProductController.class).getAllProducts()).withSelfRel(),
+            linkTo(methodOn(ProductController.class).getAll()).withSelfRel(),
             linkTo(methodOn(ProductController.class).createProduct(null)).withRel("create-product")
         );
 
@@ -124,7 +124,7 @@ public class ProductController {
     }
   )
   @GetMapping("/{id}")
-  public ResponseEntity<EntityModel<ProductResponse>> getProductById(
+  public ResponseEntity<EntityModel<ProductResponse>> getById(
     @Parameter(
         name = "id",
         description = "Identificador único del producto",
@@ -132,16 +132,16 @@ public class ProductController {
         required = true
     )
     @PathVariable Long id) {
-      Optional<ProductResponse> productResponseOptional = productService.getProductById(id);
+      Optional<ProductResponse> productResponseOptional = Optional.ofNullable(productService.getById(id));
 
       if (productResponseOptional.isPresent()) {
         ProductResponse productResponse = productResponseOptional.get();
         List<Link> links = new ArrayList<>();
-        links.add(linkTo(methodOn(ProductController.class).getProductById(productResponse.getId())).withSelfRel());
-        links.add(linkTo(methodOn(ProductController.class).updateProduct(productResponse.getId(), null)).withRel("update-product"));
+        links.add(linkTo(methodOn(ProductController.class).getById(productResponse.getId())).withSelfRel());
+        links.add(linkTo(methodOn(ProductController.class).update(productResponse.getId(), null)).withRel("update-product"));
         links.add(linkTo(methodOn(ProductController.class).delete(productResponse.getId())).withRel("delete-product"));
         links.add(linkTo(methodOn(ProductController.class).createProduct(null)).withRel("create-product"));
-        links.add(linkTo(methodOn(ProductController.class).getAllProducts()).withRel("all-products"));
+        links.add(linkTo(methodOn(ProductController.class).getAll()).withRel("all-products"));
 
         EntityModel<ProductResponse> resource = EntityModel.of(productResponse, links);
           return new ResponseEntity<>(resource, HttpStatus.OK);
@@ -202,13 +202,13 @@ public class ProductController {
   )
   @PostMapping
   public ResponseEntity<EntityModel<ProductResponse>> createProduct(@RequestBody ProductRequest productRequest) {
-    ProductResponse createdProductResponse = productService.addProduct(productRequest);
+    ProductResponse createdProductResponse = productService.create(productRequest);
 
     List<Link> links = new ArrayList<>();
-    links.add(linkTo(methodOn(ProductController.class).getProductById(createdProductResponse.getId())).withSelfRel());
-    links.add(linkTo(methodOn(ProductController.class).updateProduct(createdProductResponse.getId(), null)).withRel("update-product"));
+    links.add(linkTo(methodOn(ProductController.class).getById(createdProductResponse.getId())).withSelfRel());
+    links.add(linkTo(methodOn(ProductController.class).update(createdProductResponse.getId(), null)).withRel("update-product"));
     links.add(linkTo(methodOn(ProductController.class).delete(createdProductResponse.getId())).withRel("delete-product"));
-    links.add(linkTo(methodOn(ProductController.class).getAllProducts()).withRel("all-products"));
+    links.add(linkTo(methodOn(ProductController.class).getAll()).withRel("all-products"));
     links.add(linkTo(methodOn(ProductController.class).createProduct(null)).withRel("create-product"));
 
     EntityModel<ProductResponse> resource = EntityModel.of(createdProductResponse, links);
@@ -252,7 +252,7 @@ public class ProductController {
     }
   )
   @PutMapping("/{id}")
-  public ResponseEntity<EntityModel<ProductResponse>> updateProduct(
+  public ResponseEntity<EntityModel<ProductResponse>> update(
     @Parameter(
       name = "id",
       description = "Identificador único del producto a actualizar",
@@ -261,16 +261,16 @@ public class ProductController {
     )
     @PathVariable Long id,
     @RequestBody ProductRequest productRequest) {
-    ProductResponse updatedProductResponse = productService.updateProduct(id, productRequest);
+    ProductResponse updatedProductResponse = productService.update(id, productRequest);
     if (updatedProductResponse == null) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     List<Link> links = new ArrayList<>();
-    links.add(linkTo(methodOn(ProductController.class).getProductById(updatedProductResponse.getId())).withSelfRel());
+    links.add(linkTo(methodOn(ProductController.class).getById(updatedProductResponse.getId())).withSelfRel());
     links.add(linkTo(methodOn(ProductController.class).delete(updatedProductResponse.getId())).withRel("delete-product"));
     links.add(linkTo(methodOn(ProductController.class).createProduct(null)).withRel("create-product"));
-    links.add(linkTo(methodOn(ProductController.class).getAllProducts()).withRel("all-products"));
+    links.add(linkTo(methodOn(ProductController.class).getAll()).withRel("all-products"));
 
     EntityModel<ProductResponse> resource = EntityModel.of(updatedProductResponse, links);
     return ResponseEntity.ok(resource);

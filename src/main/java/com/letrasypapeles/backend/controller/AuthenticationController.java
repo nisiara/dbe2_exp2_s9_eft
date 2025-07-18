@@ -1,12 +1,11 @@
 package com.letrasypapeles.backend.controller;
 
-import com.letrasypapeles.backend.dto.AuthenticationDTO;
+import com.letrasypapeles.backend.dto.AuthenticationResponse;
 import com.letrasypapeles.backend.dto.LoginDTO;
-import com.letrasypapeles.backend.dto.RegisterDTO;
+import com.letrasypapeles.backend.dto.AuthenticationRequest;
 import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.UserRepository;
 import com.letrasypapeles.backend.security.jwt.JwtGenerator;
-import com.letrasypapeles.backend.service.AuthenticationService;
 import com.letrasypapeles.backend.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/authentication")
-@Tag(name = "Autenticación", description = "Operaciones relacionadas con la autenticación de usuario'")
+@Tag(name = "Autenticación", description = "Operaciones registrar y autenticar usuario'")
 public class AuthenticationController {
 	private final AuthenticationManager authenticationManager;
 	private final JwtGenerator jwtGenerator;
@@ -36,13 +35,13 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<AuthenticationDTO> login(@RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
 		Authentication authentication = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+			new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String token = jwtGenerator.generateToken(authentication);
 			
-			return ResponseEntity.ok(new AuthenticationDTO(token));
+			return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
 
 	// @PostMapping("/registro")

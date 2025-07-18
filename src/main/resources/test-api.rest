@@ -8,11 +8,11 @@ POST http://localhost:8080/api/client
 Content-Type: application/json
 
 {
-  "name": "jose soto",
-  "username": "jose",
-  "email": "jose.soto@correo.com",
+  "name": "juan",
+  "username": "juanito",
+  "email": "juanin@correo.com",
   "password": "password",
-  "fidelityPoints": 10
+  "fidelityPoints": 100
 }
 
 ### CREAR UN DEVELOPER -- TIENE ROL DEVELOPER
@@ -40,7 +40,20 @@ Content-Type: application/json
 GET http://localhost:8080/api/product
 Content-Type: application/json
 
-### CREAR CARRO
+
+### CREAR UN NUEVO PRODUCTO
+POST http://localhost:8080/api/product
+Content-Type: application/json  
+
+{
+  "name": "producto3",
+  "sku": "sku3",
+  "price": 990.0,
+  "description": "descripcion del producto",
+  "stock": 10
+}
+
+### CREAR COMPRA (ERROR STOCK INSUFICIENTE)
 POST http://localhost:8080/api/carts
 Content-Type: application/json 
 
@@ -53,6 +66,24 @@ Content-Type: application/json
     },
     {
       "productId": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+### CREAR COMPRA
+POST http://localhost:8080/api/carts
+Content-Type: application/json 
+
+{
+  "clientId": 1,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 3,
       "quantity": 1
     }
   ]

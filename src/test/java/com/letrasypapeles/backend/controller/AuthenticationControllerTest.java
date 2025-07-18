@@ -26,9 +26,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.letrasypapeles.backend.dto.AuthenticationDTO;
+import com.letrasypapeles.backend.dto.AuthenticationResponse;
 import com.letrasypapeles.backend.dto.LoginDTO;
-import com.letrasypapeles.backend.dto.RegisterDTO;
+import com.letrasypapeles.backend.dto.AuthenticationRequest;
 import com.letrasypapeles.backend.entity.Role;
 import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.RoleRepository;
@@ -64,26 +64,26 @@ public class AuthenticationControllerTest {
     private AuthenticationController authenticationController;
 
     private LoginDTO loginDTO;
-    private RegisterDTO registerDTO;
+    private AuthenticationRequest authenticationRequest;
     private BaseUser user;
-    private Role role;
+
 
     @BeforeEach
     public void setUp() {
-      loginDTO = new LoginDTO();
-      loginDTO.setUsername("testuser");
-      loginDTO.setPassword("password");
+      authenticationRequest = new AuthenticationRequest();
+      authenticationRequest.setUsername("testuser");
+      authenticationRequest.setPassword("password");
 
-      registerDTO = new RegisterDTO();
-      registerDTO.setUsername("newuser");
-      registerDTO.setPassword("password");
-      registerDTO.setName("Test User");
-      registerDTO.setEmail("test@email.com");
+      authenticationRequest = new AuthenticationRequest();
+      authenticationRequest.setUsername("newuser");
+      authenticationRequest.setPassword("password");
+      authenticationRequest.setName("Test User");
+      authenticationRequest.setEmail("test@email.com");
 
       user = new BaseUser();
       //user.setUsername("newuser");
 
-      role = new Role();
+      // role = new Role();
       // role.setName("CLIENTE");
 
       SecurityContextHolder.setContext(securityContext);
@@ -98,7 +98,7 @@ public class AuthenticationControllerTest {
       when(jwtGenerator.generateToken(authentication)).thenReturn(expectedToken);
 
       // When
-      ResponseEntity<AuthenticationDTO> response = authenticationController.login(loginDTO);
+      ResponseEntity<AuthenticationResponse> response = authenticationController.login(authenticationRequest);
 
       // Then
       assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -113,8 +113,8 @@ public class AuthenticationControllerTest {
     @Test
     public void testRegisterSuccess() {
 
-      when(userRepository.existsByUsername(registerDTO.getUsername())).thenReturn(false);
-      when(passwordEncoder.encode(registerDTO.getPassword())).thenReturn("encoded-password");
+      when(userRepository.existsByUsername(authenticationRequest.getUsername())).thenReturn(false);
+      when(passwordEncoder.encode(authenticationRequest.getPassword())).thenReturn("encoded-password");
       
       // when(roleRepository.findByRoleName("CLIENTE")).thenReturn(Optional.of(role));
       when(userRepository.save(any(BaseUser.class))).thenReturn(user);
@@ -124,20 +124,20 @@ public class AuthenticationControllerTest {
       // assertEquals(HttpStatus.CREATED, response.getStatusCode());
       // assertEquals("Usuario registrado de forma exitosa.", response.getBody());
       
-      verify(userRepository).existsByUsername(registerDTO.getUsername());
-      verify(passwordEncoder).encode(registerDTO.getPassword());
+      verify(userRepository).existsByUsername(authenticationRequest.getUsername());
+      verify(passwordEncoder).encode(authenticationRequest.getPassword());
       // verify(roleRepository).findByRoleName("CLIENTE");
       verify(userRepository).save(any(BaseUser.class));
     }
 
     // @Test
     // public void testRegisterUserAlreadyExists() {
-    //   when(userRepository.existsByUsername(registerDTO.getUsername())).thenReturn(true);
+    //   when(userRepository.existsByUsername(authenticationRequest.getUsername())).thenReturn(true);
     //   ResponseEntity<?> response = authenticationController.registro(registerDTO);
     //   assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     //   assertEquals("El usuario ya existe", response.getBody());
       
-    //   verify(userRepository).existsByUsername(registerDTO.getUsername());
+    //   verify(userRepository).existsByUsername(authenticationRequest.getUsername());
     //   verify(userRepository, never()).save(any(BaseUser.class));
     // }
   

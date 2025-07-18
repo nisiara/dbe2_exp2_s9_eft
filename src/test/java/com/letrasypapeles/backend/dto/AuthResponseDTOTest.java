@@ -7,7 +7,7 @@ public class AuthResponseDTOTest {
 	@Test
 	public void testGettersAndSetters() {
 		String accessToken = "accessToken";
-		AuthenticationDTO authResponseDTO = new AuthenticationDTO(accessToken);
+		AuthenticationResponse authResponseDTO = new AuthenticationResponse(accessToken);
 
 		Assertions.assertEquals(accessToken, authResponseDTO.getAccessToken());
 

@@ -16,5 +16,6 @@ public class ProductResponse{
   private String sku;
   private String name;
   private Double price;
-  private String details;
+  private String description;
+  private int stock;
 }

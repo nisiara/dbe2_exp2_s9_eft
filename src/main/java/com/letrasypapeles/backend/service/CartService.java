@@ -13,7 +13,6 @@ import com.letrasypapeles.backend.dto.CartItemRequest;
 import com.letrasypapeles.backend.dto.CartItemResponse;
 import com.letrasypapeles.backend.dto.CartRequest;
 import com.letrasypapeles.backend.dto.CartResponse;
-import com.letrasypapeles.backend.dto.ClientSimpleResponse;
 import com.letrasypapeles.backend.dto.OrderResponse;
 import com.letrasypapeles.backend.entity.Cart;
 import com.letrasypapeles.backend.entity.CartItem;
@@ -40,12 +39,10 @@ public class CartService {
   @Autowired
   public CartService(
     CartRepository cartRepository, 
-    
     ProductRepository productRepository, 
     OrderRepository orderRepository,
     ClientRepository clientRepository){
       this.cartRepository = cartRepository;
-      
       this.productRepository = productRepository;
       this.orderRepository = orderRepository;
       this.clientRepository = clientRepository;
@@ -66,35 +63,38 @@ public class CartService {
       if (item.getQuantity() < 1) {
         throw new IllegalArgumentException("El stock del producto con ID " + item.getProductId() + " debe ser mayor o igual a 1.");
       }
+
+      Product product = productRepository.findById(item.getProductId())
+        .orElseThrow(() -> new EntityNotFoundException("El producto con el id " + item.getProductId() + " no existe."));
+
+      if (!product.hasStock(item.getQuantity())) {
+        throw new IllegalStateException("Stock insuficiente para el producto " + product.getName() );
+      }  
     }
 
-
-    // 2. Obtener cliente (añade esto en CartRequest)
+    // 3. Obtener cliente (añade esto en CartRequest)
     Client client = clientRepository.findById(cartRequest.getClientId())
       .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 
-    ClientSimpleResponse clientSimpleResponse = new ClientSimpleResponse();
-    clientSimpleResponse.setId(client.getId());
-    clientSimpleResponse.setName(client.getName());
 
-    // 3. Asociar datos de cartRequest a la entidad newCart para luego guardarlo en la BD (por eso usamos la entidades)
-    // 3a. Crea la entidad newCart
+    // 4. Asociar datos de cartRequest a la entidad newCart para luego guardarlo en la BD (por eso usamos la entidades)
+    // 4a. Crea la entidad newCart
     Cart cart = new Cart();
     cart.setClient(client);
     cartRepository.save(cart);
   
-    // 4. Procesar ítems
+    // 5. Procesar ítems
     List<CartItem> cartItems = processCartItems(cartRequest.getItems(), cart);
     double totalAmount = calculateTotalAmount(cartItems);
     
-    // 5. Crear orden
+    // 6. Crear orden
     Order order = createOrder(cart, totalAmount);
         
-    // 6. Actualizar relaciones
+    // 7. Actualizar relaciones
     cart.setCartItems(cartItems);
     cart.setOrder(order);
         
-    // 7. Retornar respuesta
+    // 8. Retornar respuesta
     return toOrderResponse(order);
   } 
 
@@ -106,8 +106,12 @@ public class CartService {
 
   private List<CartItem> processCartItems(List<CartItemRequest> items, Cart cart) {
     return items.stream().map(item -> {
-      Product product = productRepository.findById(item.getProductId())
-        .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado: " + item.getProductId()));
+      // Product product = productRepository.findById(item.getProductId())
+      //   .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado: " + item.getProductId()));
+
+      Product product = productRepository.findById(item.getProductId()).get();
+        product.decreaseStock(item.getQuantity()); // Actualiza el stock
+        productRepository.save(product); // Guarda los cambios
           
     return CartItem.builder()
       .cart(cart)
