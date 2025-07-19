@@ -23,32 +23,35 @@ public class ProductService {
 
 	public List<ProductResponse> findAllProducts() {
     return productRepository.findAll().stream()
-      .map(product -> new ProductResponse(
-        product.getId(),
-        product.getName(), 
-        product.getDescription(), 
-        product.getPrice(), 
-        product.getSku(), 
-        product.getStock()))
+      .map(product -> ProductResponse.builder() // Usar el builder aquí
+        .id(product.getId())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .sku(product.getSku())
+        .stock(product.getStock())
+        .build())
       .toList();
-  }
+}
   
 	public ProductResponse findProductById(Long id) {
     return productRepository.findById(id)
-      .map(product -> new ProductResponse(
-        product.getId(),
-        product.getName(), 
-        product.getDescription(), 
-        product.getPrice(), 
-        product.getSku(), 
-        product.getStock()))
+      .map(product -> ProductResponse.builder() // Usar el builder aquí
+        .id(product.getId())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .sku(product.getSku())
+        .stock(product.getStock())
+        .build())
       .orElseThrow(() -> new RuntimeException("No existe el producto con el id: " + id));
       
   }
 
   public ProductResponse saveProduct(ProductRequest productRequest) {
-    if (productRequest == null || productRequest.getName() == null || productRequest.getSku() == null) {
-      throw new IllegalArgumentException("No se puede crear un producto sin mobre o sin sku");
+    if (productRequest == null || productRequest.getName() == null || productRequest.getSku() == null ||
+        productRequest.getPrice() == null || productRequest.getStock() == 0 || productRequest.getDescription() == null) {
+      throw new IllegalArgumentException("Todos los datos del producto son obligatorios.");
     }
     if (productRepository.existsBySku(productRequest.getSku())) {
       throw new IllegalArgumentException("El SKU ya está registrado");
@@ -64,13 +67,14 @@ public class ProductService {
 
     productRepository.save(product);
     
-    return new ProductResponse(
-      product.getId(),
-      product.getName(), 
-      product.getDescription(), 
-      product.getPrice(), 
-      product.getSku(), 
-      product.getStock());
+    return ProductResponse.builder() 
+        .id(product.getId())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .sku(product.getSku())
+        .stock(product.getStock())
+        .build();
     
   }
 
@@ -100,13 +104,14 @@ public class ProductService {
 
     productRepository.save(product);
 
-    return new ProductResponse(
-      product.getId(),
-      product.getName(), 
-      product.getDescription(), 
-      product.getPrice(), 
-      product.getSku(), 
-      product.getStock());
+    return ProductResponse.builder() 
+      .id(product.getId())
+      .name(product.getName())
+      .description(product.getDescription())
+      .price(product.getPrice())
+      .sku(product.getSku())
+      .stock(product.getStock())
+      .build();
     
   }
     

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 
-//public class ProductResponse extends RepresentationModel<ProductResponse>{
 public class ProductResponse{
   private Long id;
   private String sku;

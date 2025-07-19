@@ -50,7 +50,7 @@ public class AuthenticationService {
   }
   
   public AdminResponse saveUserAdmin(AdminRequest adminRequest) {
-    if(adminRequest == null || adminRequest.getUsername() == null || adminRequest.getPassword() == null) {
+    if (adminRequest == null || adminRequest.getUsername() == null || adminRequest.getPassword() == null) {
       throw new IllegalArgumentException("El usuario debe contener nombre de usuario y contraseña.");
     }
     if (baseUserRepository.existsByUsername(adminRequest.getUsername())) {
@@ -109,9 +109,10 @@ public class AuthenticationService {
 
 
   public DeveloperResponse saveUserDeveloper(DeveloperRequest developerRequest) {
-    if (developerRequest == null || developerRequest.getUsername() == null || developerRequest.getUsername() == null) {
+    if (developerRequest == null || developerRequest.getUsername() == null || developerRequest.getPassword() == null) {
       throw new IllegalArgumentException("El usuario debe contener nombre de usuario y contraseña.");
     }
+    
     if (baseUserRepository.existsByUsername(developerRequest.getUsername())) {
       throw new IllegalArgumentException("El usuario ya está registrado.");
     }
