@@ -1,10 +1,23 @@
-### OBTENER TODOS LOS CLIENTES
-GET http://localhost:8080/api/client
+### OBTENER TODOS LOS USUARIOS
+GET http://localhost:8080/api/user
 Content-Type: application/json
 
 
-### CREAR UN NUEVO CLIENTE -- TIENE ROL COMPRA
-POST http://localhost:8080/api/client
+### CREAR USUARIO -- ROL ADMIN
+POST http://localhost:8080/api/authentication/register/admin
+Content-Type: application/json
+
+{
+  "name": "administrador",
+  "username": "admin",
+  "password": "password",
+  "message": "Soy el mas pulento de todos"
+
+}
+
+
+### CREAR USUARIO -- ROL CLIENTE
+POST http://localhost:8080/api/authentication/register/client
 Content-Type: application/json
 
 {
@@ -15,8 +28,8 @@ Content-Type: application/json
   "fidelityPoints": 100
 }
 
-### CREAR UN DEVELOPER -- TIENE ROL DEVELOPER
-POST http://localhost:8080/api/developer
+### CREAR USUARIO -- ROL DEVELOPER
+POST http://localhost:8080/api/authentication/register/developer
 Content-Type: application/json
 
 {
@@ -25,6 +38,23 @@ Content-Type: application/json
   "username": "nico",
   "position": "frontend"
 }
+
+### LOGIN - OBTENER TOKEN
+POST http://localhost:8080/api/authentication/login
+Content-Type: application/json
+
+{
+  "username": "nico",
+  "password": "password"
+}
+
+### OBTENER TODOS LOS CLIENTES
+GET http://localhost:8080/api/client
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuaWNvIiwiaWF0IjoxNzUyODk5MzE1LCJleHAiOjE3NTI5ODU3MTV9.lOXMav_GTASHOdXMoSIL-AIfptBH7wg9gZrAm2ORORNLkvLOnBlifMxlxHrqJ1nYyll3owSaxRHc8YDmX_f84A
+
+### OBTENER TODOS LOS PRODUCTOS
+GET http://localhost:8080/api/product
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuaXRvIiwiaWF0IjoxNzUyODk5MTQyLCJleHAiOjE3NTI5ODU1NDJ9.7LJnhz16TgpFa2zp2OPnH1dRpgf2X7sAjVEHONUCJHX_ZI5HLp-OVWUD1E_eODylsz4-2eszo70vm3wr6dktVA
 
 
 ### OBTENER UN CLIENTE POR ID
@@ -98,11 +128,3 @@ Content-Type: application/json
 GET http://localhost:8080/api/carts/1
 Content-Type: application/json
 
-### LOGIN - OBTENER TOKEN
-POST http://localhost:8080/api/authentication/login
-Content-Type: application/json
-
-{
-  "username": "nico",
-  "password": "password"
-}

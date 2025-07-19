@@ -36,13 +36,6 @@ public class DeveloperController {
   public DeveloperResponse getDeveloperById(@RequestParam Long id) {
       return developerService.getDeveloperById(id);
   }
-
-  @PostMapping
-  public DeveloperResponse createDeveloper(@RequestBody DeveloperRequest developerRequest) {
-    DeveloperResponse developerResponse = developerService.createDeveloper(developerRequest);
-    return developerResponse;
-  }
-  
   
   
 }

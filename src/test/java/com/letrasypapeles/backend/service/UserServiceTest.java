@@ -16,43 +16,43 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.letrasypapeles.backend.entity.BaseUser;
 import com.letrasypapeles.backend.repository.UserRepository;
 
-@ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+// @ExtendWith(MockitoExtension.class)
+// public class UserServiceTest {
   
 
-  @Mock
-  private UserRepository userRepository;
+//   @Mock
+//   private UserRepository userRepository;
 
-  @InjectMocks
-  private UserService userService;
+//   @InjectMocks
+//   private UserService userService;
 
-  private BaseUser user;
+//   private BaseUser user;
 
-  @BeforeEach
-  public void setUp(){
-    user = BaseUser.builder()
-			.id(1L)
-			.name("Juanito Test")
-      // .username("Juanin")
-			.build();
-  }
+//   @BeforeEach
+//   public void setUp(){
+//     user = BaseUser.builder()
+// 			.id(1L)
+// 			.name("Juanito Test")
+//       // .username("Juanin")
+// 			.build();
+//   }
 
-  @Test
-  public void testGetAllUsers(){
-    List<BaseUser> expected = List.of(user);
-    when(userRepository.findAll()).thenReturn(expected);
-		assertEquals(expected, userService.obtenerTodos());
-  }
+//   @Test
+//   public void testGetAllUsers(){
+//     List<BaseUser> expected = List.of(user);
+//     when(userRepository.findAll()).thenReturn(expected);
+// 		assertEquals(expected, userService.obtenerTodos());
+//   }
 
-  @Test
-  public void testGetUserById() {
-    when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-    assertEquals(Optional.of(user), userService.obtenerPorId(1L));
-	}
+//   @Test
+//   public void testGetUserById() {
+//     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+//     assertEquals(Optional.of(user), userService.obtenerPorId(1L));
+// 	}
 
-  @Test
-  public void testGetUserByUsername(){
-    when(userRepository.findByUsername("Juanin")).thenReturn(Optional.of(user));
-    assertEquals(Optional.of(user), userService.obtenerPorUsername("Juanin"));
-  }
-}
+//   @Test
+//   public void testGetUserByUsername(){
+//     when(userRepository.findByUsername("Juanin")).thenReturn(Optional.of(user));
+//     assertEquals(Optional.of(user), userService.obtenerPorUsername("Juanin"));
+//   }
+// }

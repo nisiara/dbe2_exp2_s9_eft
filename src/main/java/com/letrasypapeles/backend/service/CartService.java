@@ -110,8 +110,8 @@ public class CartService {
       //   .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado: " + item.getProductId()));
 
       Product product = productRepository.findById(item.getProductId()).get();
-        product.decreaseStock(item.getQuantity()); // Actualiza el stock
-        productRepository.save(product); // Guarda los cambios
+        product.decreaseStock(item.getQuantity()); 
+        productRepository.save(product);
           
     return CartItem.builder()
       .cart(cart)

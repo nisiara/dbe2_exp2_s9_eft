@@ -13,9 +13,10 @@ import java.util.Date;
 
 @Component
 public class JwtGenerator {
-	private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
+	private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+	
 	public String generateToken(Authentication authentication) {
+		
 		String username = authentication.getName();
 		Date currenDate = new Date();
 		Date expirationDate = new Date(System.currentTimeMillis() + 86_400_000);

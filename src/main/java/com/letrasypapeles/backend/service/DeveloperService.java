@@ -41,27 +41,5 @@ public class DeveloperService {
       .orElseThrow(() -> new RuntimeException("No existe Developer con el id: " + id));
   }
 
-  public DeveloperResponse createDeveloper(DeveloperRequest developerRequest) {
-    if (developerRequest == null || developerRequest.getName() == null || developerRequest.getUsername() == null) {
-      throw new IllegalArgumentException("Developer no puede ser nulo y debe contener nombre y username");
-    }
-
-    Developer developer = new Developer();
-
-    Optional<Role> roleDeveloper = roleRepository.findByRoleName(ERole.DEVELOPER);
-    if (roleDeveloper.isPresent()) {
-      developer.setRole(roleDeveloper.get());
-    } else {
-      throw new RuntimeException("El rol DEVELOPER no se encontró en la base de datos.");
-    }
-
-    developer.setName(developerRequest.getName());
-    developer.setPassword(passwordEncoder.encode(developerRequest.getPassword()));
-    developer.setUsername(developerRequest.getUsername());
-    developer.setPosition(developerRequest.getPosition());
-    
-    developerRepository.save(developer);
- 
-    return new DeveloperResponse(developer.getName(), developer.getUsername(), developer.getPosition());
-  }
+  
 }

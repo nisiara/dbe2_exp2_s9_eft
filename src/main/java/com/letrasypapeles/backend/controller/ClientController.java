@@ -11,15 +11,13 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letrasypapeles.backend.dto.ClientRequest;
 import com.letrasypapeles.backend.dto.ClientResponse;
 import com.letrasypapeles.backend.entity.Client;
 import com.letrasypapeles.backend.service.ClientService;
@@ -37,6 +35,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
 @RequestMapping("/api/client")
 @Tag(name = "** Endpoints Cliente **", description = "Operaciones relacionadas con la entidad Cliente")
 public class ClientController {
@@ -156,76 +155,6 @@ public class ClientController {
 		}
 		return new ResponseEntity<>(client, HttpStatus.OK);
 	
-	}
-
-
-	/* 
-	 *
-	 * CREAR CLIENTE
-	 * 
-	*/
-	@Operation(
-		summary = "Crea un nuevo cliente",
-		description = "Permite registrar un nuevo cliente en el sistema con todos los datos necesarios",
-		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-			description = "Datos del nuevo cliente a crear",
-			required = true,
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ClientRequest.class),
-				examples = {
-					@ExampleObject(
-						name = "Ejemplo Cliente",
-						summary = "Ejemplo de creación de cliente",
-						value = """
-						{
-							"name": "jose soto",
-							"username": "jose",
-							"email": "jose.soto@correo.com",
-							"password": "password",
-							"fidelityPoints": 10
-						}
-						"""
-					)
-				}
-			)
-		),
-		responses = {
-			@ApiResponse(
-				responseCode = "201",
-				description = "Cliente creado exitosamente",
-				content = @Content(
-					mediaType = "application/json",
-					schema = @Schema(implementation = ClientResponse.class)
-				)
-			),
-			@ApiResponse(
-				responseCode = "400",
-				description = "Datos del cliente inválidos o incompletos"
-			),
-			@ApiResponse(
-				responseCode = "409",
-				description = "Conflicto: un cliente con datos similares ya existe"
-			)
-		}
-	)
-
-	@PostMapping
-	public ResponseEntity<ClientResponse> create(@RequestBody ClientRequest clientRequest) {
-    ClientResponse newClient = clientService.create(clientRequest);
-    return new ResponseEntity<>(newClient, HttpStatus.CREATED);
-      
-    //   EntityModel<Client> resource = EntityModel.of(createdClient,
-    //     linkTo(methodOn(ClientController.class).getById(createdClient.getId())).withSelfRel(),
-    //     linkTo(methodOn(ClientController.class).getClients()).withRel("all-clients"),
-    //     linkTo(methodOn(ClientController.class).delete(createdClient.getId())).withRel("delete-client"),
-    //     linkTo(methodOn(ClientController.class).create(null)).withRel("create-client")
-    //   );
-    //   return ResponseEntity.status(HttpStatus.CREATED).body(resource);
-    // }
-    // catch (IllegalArgumentException e) {
-    //   return ResponseEntity.badRequest().body(e.getMessage());
-    // }
 	}
 
 	

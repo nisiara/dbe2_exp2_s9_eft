@@ -26,9 +26,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		);
 
 		return new User(
-      user.getUsername(), // El nombre de usuario para autenticación
-      user.getPassword(), // La contraseña del usuario
-      Collections.singletonList( // Crea una lista inmutable que contiene un solo elemento
+      user.getUsername(), 
+      user.getPassword(),
+      Collections.singletonList(
         new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName().name())
       )
     );
