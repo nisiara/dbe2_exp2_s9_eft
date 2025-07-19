@@ -27,28 +27,26 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class CartController {
   private final CartService cartService;
 
-    @Autowired
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+	@Autowired
+	public CartController(CartService cartService) {
+			this.cartService = cartService;
+	}
 
-    @PostMapping
-    public ResponseEntity<OrderResponse> processCart(@RequestBody CartRequest cartRequest) {
-        OrderResponse response = cartService.processCartAndGenerateReceipt(cartRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+	@PostMapping
+	public ResponseEntity<OrderResponse> processCart(@RequestBody CartRequest cartRequest) {
+		OrderResponse response = cartService.processCartAndGenerateReceipt(cartRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CartResponse> getCartById(@PathVariable Long id) {
-        Optional<CartResponse> cartResponse = cartService.getCartResponseById(id);
-        return cartResponse.map(ResponseEntity::ok)
-                          .orElse(ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<CartResponse> getCartById(@PathVariable Long id) {
+		Optional<CartResponse> cartResponse = cartService.getCartResponseById(id);
+		return cartResponse.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	}
 
-    @GetMapping("/orders/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
-        Optional<OrderResponse> orderResponse = cartService.getOrderResponseById(id);
-        return orderResponse.map(ResponseEntity::ok)
-                          .orElse(ResponseEntity.notFound().build());
-    }
+	@GetMapping("/orders/{id}")
+	public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+		Optional<OrderResponse> orderResponse = cartService.getOrderResponseById(id);
+		return orderResponse.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	}
 }

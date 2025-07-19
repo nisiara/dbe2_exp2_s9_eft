@@ -146,10 +146,6 @@ public class CartService {
     .cartId(order.getCart().getId())
     .build();
   }
-   
-  
- 
- 
 
   // Opcional: Métodos para obtener un carro o boleta específica si se necesitan por separado
   // Opcional: Métodos para obtener DTOs específicos

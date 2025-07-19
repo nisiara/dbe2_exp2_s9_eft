@@ -30,12 +30,12 @@ public class DeveloperController {
 
   @GetMapping
   public List<DeveloperResponse> getAllDevelopers() {
-      return developerService.getAllDevelopers();
+      return developerService.findAllDevelopers();
   }
 
   @GetMapping("/{id}")
   public DeveloperResponse getDeveloperById(@RequestParam Long id) {
-      return developerService.getDeveloperById(id);
+      return developerService.findDeveloperById(id);
   }
   
   

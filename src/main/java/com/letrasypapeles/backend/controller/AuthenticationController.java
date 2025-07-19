@@ -58,7 +58,7 @@ public class AuthenticationController {
 	@PostMapping("/register/admin")
 	public ResponseEntity<AdminResponse> registerAdmin(@RequestBody AdminRequest adminRequest) {
 		try {
-			AdminResponse adminResponse = authenticationService.createAdmin(adminRequest);
+			AdminResponse adminResponse = authenticationService.saveUserAdmin(adminRequest);
 			return new ResponseEntity<>(adminResponse, HttpStatus.CREATED);
 		} 
 		catch (IllegalArgumentException e) {
@@ -69,7 +69,7 @@ public class AuthenticationController {
 	@PostMapping("/register/client")
 	 public ResponseEntity<ClientResponse> registerClient(@RequestBody ClientRequest clientRequest) {
 		try {
-			ClientResponse clientResponse = authenticationService.createClient(clientRequest);
+			ClientResponse clientResponse = authenticationService.saveUserClient(clientRequest);
     	return new ResponseEntity<>(clientResponse, HttpStatus.CREATED);
 		}
 		catch (IllegalArgumentException e) {
@@ -80,7 +80,7 @@ public class AuthenticationController {
 	@PostMapping("/register/developer")
 	 public ResponseEntity<DeveloperResponse> registerDeveloper(@RequestBody DeveloperRequest developerRequest) {
 		try {
-			DeveloperResponse developerResponse = authenticationService.createDeveloper(developerRequest);
+			DeveloperResponse developerResponse = authenticationService.saveUserDeveloper(developerRequest);
     	return new ResponseEntity<>(developerResponse, HttpStatus.CREATED);
 		}
 		catch (IllegalArgumentException e) {

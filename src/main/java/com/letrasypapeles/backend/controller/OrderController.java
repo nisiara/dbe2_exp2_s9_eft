@@ -70,26 +70,24 @@ public class OrderController {
 		}
 	)
 	@GetMapping
-	public ResponseEntity<CollectionModel<EntityModel<Order>>> obtenerTodos() {
-		List<Order> orders = orderService.obtenerTodos();
+	public ResponseEntity<CollectionModel<EntityModel<Order>>> getAllOrders() {
+		List<Order> orders = orderService.findAllOrders();
 		
 		// Mapear cada orden a un EntityModel y añadir enlaces específicos a la orden
     List<EntityModel<Order>> orderModels = orders.stream()
       .map(order -> {
         List<Link> links = new ArrayList<>();
-        links.add(linkTo(methodOn(OrderController.class).obtenerPorId(order.getId())).withSelfRel());
-        links.add(linkTo(methodOn(OrderController.class).actualizarOrden(order.getId(), null)).withRel("update-order"));
-        links.add(linkTo(methodOn(OrderController.class).delete(order.getId())).withRel("delete-order"));
-        links.add(linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order"));
-        links.add(linkTo(methodOn(OrderController.class).obtenerTodos()).withRel("all-orders"));
+        links.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
+        links.add(linkTo(methodOn(OrderController.class).updateOrder(order.getId(), null)).withRel("update-order"));
+        links.add(linkTo(methodOn(OrderController.class).deleteOrder(order.getId())).withRel("delete-order"));
+        links.add(linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders"));
 
         return EntityModel.of(order, links);
       })
       .collect(Collectors.toList());
 
     CollectionModel<EntityModel<Order>> collectionModel = CollectionModel.of(orderModels,
-      linkTo(methodOn(OrderController.class).obtenerTodos()).withSelfRel(),
-      linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order")
+      linkTo(methodOn(OrderController.class).getAllOrders()).withSelfRel()
     );
 
     return new ResponseEntity<>(collectionModel, HttpStatus.OK);
@@ -125,7 +123,7 @@ public class OrderController {
 	)
 	
 	@GetMapping("/{id}")
-  public ResponseEntity<EntityModel<Order>> obtenerPorId(
+  public ResponseEntity<EntityModel<Order>> getOrderById(
     @Parameter(
       name = "id",
       description = "Identificador único de la orden",
@@ -133,16 +131,15 @@ public class OrderController {
       required = true
     )
     @PathVariable Long id) {
-    Optional<Order> orderOptional = orderService.obtenerPorId(id);
+    Optional<Order> orderOptional = orderService.findOrderById(id);
 
     if (orderOptional.isPresent()) {
       Order order = orderOptional.get();
       List<Link> links = new ArrayList<>();
-      links.add(linkTo(methodOn(OrderController.class).obtenerPorId(order.getId())).withSelfRel());
-      links.add(linkTo(methodOn(OrderController.class).actualizarOrden(order.getId(), null)).withRel("update-order"));
-      links.add(linkTo(methodOn(OrderController.class).delete(order.getId())).withRel("delete-order"));
-      links.add(linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order"));
-      links.add(linkTo(methodOn(OrderController.class).obtenerTodos()).withRel("all-orders"));
+      links.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
+      links.add(linkTo(methodOn(OrderController.class).updateOrder(order.getId(), null)).withRel("update-order"));
+      links.add(linkTo(methodOn(OrderController.class).deleteOrder(order.getId())).withRel("delete-order"));
+      links.add(linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders"));
 			
       EntityModel<Order> resource = EntityModel.of(order, links);
       return new ResponseEntity<>(resource, HttpStatus.OK);
@@ -157,106 +154,21 @@ public class OrderController {
 	 * OBTENER ÓRDENES POR ID DE CLIENTE
 	 * 
 	*/
-	// @Operation(
-	// 	summary = "Obtiene órdenes por ID de cliente",
-	// 	description = "Este endpoint devuelve una lista de órdenes asociadas a un cliente específico",
-	// 	responses = {
-	// 		@ApiResponse(
-	// 			responseCode = "200",
-	// 			description = "Órdenes obtenidas exitosamente",
-	// 			content = @Content(
-	// 				mediaType = "application/json",
-	// 				schema = @Schema(implementation = Order.class)
-	// 			)
-	// 		),
-	// 		@ApiResponse(
-	// 			responseCode = "404",
-	// 			description = "No se encontraron órdenes para el cliente especificado"
-	// 		),
-	// 		@ApiResponse(
-	// 			responseCode = "500",
-	// 			description = "Error interno del servidor"
-	// 		)
-	// 	}
-	// )
-	// @GetMapping("/byClient/{clientId}")
-	// public ResponseEntity<CollectionModel<EntityModel<Order>>> obtenerPorUserId(
-  //   @Parameter(
-  //     name = "userId",
-  //     description = "Identificador único del cliente",
-  //     example = "1",
-  //     required = true
-  //   )
-  //   @PathVariable Long clientId) {
-  //   List<Order> ordersByUser = orderService.obtenerPorUserId(clientId);
-
-  //   List<EntityModel<Order>> orderModels = ordersByUser.stream()
-  //     .map(order -> {
-  //       List<Link> links = new ArrayList<>();
-  //       links.add(linkTo(methodOn(OrderController.class).obtenerPorId(order.getId())).withSelfRel());
-  //       links.add(linkTo(methodOn(OrderController.class).actualizarOrden(order.getId(), null)).withRel("update-order"));
-  //       links.add(linkTo(methodOn(OrderController.class).delete(order.getId())).withRel("delete-order"));
-  //       links.add(linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order"));
-        
-  //       return EntityModel.of(order, links);
-  //     })
-  //     .collect(Collectors.toList());
-
-  //   CollectionModel<EntityModel<Order>> collectionModel = CollectionModel.of(orderModels,
-  //     linkTo(methodOn(OrderController.class).obtenerPorUserId(clientId)).withSelfRel(),
-  //     linkTo(methodOn(OrderController.class).obtenerTodos()).withRel("all-orders"),
-  //     linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order")
-  //   );
-
-  //   if (orderModels.isEmpty()) {
-  //     return new ResponseEntity<>(collectionModel, HttpStatus.OK);
-  //   }
-
-  //   return new ResponseEntity<>(collectionModel, HttpStatus.OK);
-	// }
-
-	/* 
-	 *
-	 * CREAR ORDEN
-	 * 
-	*/
 	@Operation(
-		summary = "Crea una nueva orden",
-		description = "Este endpoint permite crear una nueva orden en el sistema",
-		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-			description = "Datos de la orden a crear",
-			required = true,
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = Order.class),
-				examples = {
-					@ExampleObject(
-						name = "Orden ejemplo",
-						value = """
-						{
-							"orderNumber": "ORD-XYZ123",
-							"issueDate": "2025-07-14T14:45:00",
-							"totalAmount": 12000.50,
-							"clientId": 2, 
-							"cartId": 2 
-						}
-							"""
-					)
-				}
-			)
-		),
+		summary = "Obtiene órdenes por ID de cliente",
+		description = "Este endpoint devuelve una lista de órdenes asociadas a un cliente específico",
 		responses = {
 			@ApiResponse(
-				responseCode = "201",
-				description = "Orden creada exitosamente",
+				responseCode = "200",
+				description = "Órdenes obtenidas exitosamente",
 				content = @Content(
 					mediaType = "application/json",
-					schema = @Schema(implementation = Order.class)
+					schema = @Schema(implementation = OrderResponse.class)
 				)
 			),
 			@ApiResponse(
-				responseCode = "400",
-				description = "Solicitud inválida"
+				responseCode = "404",
+				description = "No se encontraron órdenes para el cliente especificado"
 			),
 			@ApiResponse(
 				responseCode = "500",
@@ -264,20 +176,38 @@ public class OrderController {
 			)
 		}
 	)
-	@PostMapping
-	public ResponseEntity<EntityModel<Order>> crearPedido(@RequestBody Order order) {
-    Order newOrder = orderService.guardar(order);
+	@GetMapping("/client/{clientId}")
+	public ResponseEntity<CollectionModel<EntityModel<Order>>> getOrderByUserId(
+    @Parameter(
+      name = "userId",
+      description = "Identificador único del cliente",
+      example = "1",
+      required = true
+    )
+    @PathVariable Long clientId) {
+    List<Order> ordersByUser = orderService.findOrderByClientId(clientId);
 
-    List<Link> links = new ArrayList<>();
-    links.add(linkTo(methodOn(OrderController.class).obtenerPorId(newOrder.getId())).withSelfRel());
-    links.add(linkTo(methodOn(OrderController.class).actualizarOrden(newOrder.getId(), null)).withRel("update-order"));
-    links.add(linkTo(methodOn(OrderController.class).delete(newOrder.getId())).withRel("delete-order"));
-    links.add(linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order"));
-    links.add(linkTo(methodOn(OrderController.class).obtenerTodos()).withRel("all-orders"));
-    
+    List<EntityModel<Order>> orderModels = ordersByUser.stream()
+      .map(order -> {
+        List<Link> links = new ArrayList<>();
+        links.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
+        links.add(linkTo(methodOn(OrderController.class).updateOrder(order.getId(), null)).withRel("update-order"));
+        links.add(linkTo(methodOn(OrderController.class).deleteOrder(order.getId())).withRel("delete-order"));
+        
+        return EntityModel.of(order, links);
+      })
+      .collect(Collectors.toList());
 
-    EntityModel<Order> resource = EntityModel.of(newOrder, links);
-    return new ResponseEntity<>(resource, HttpStatus.CREATED);
+    CollectionModel<EntityModel<Order>> collectionModel = CollectionModel.of(orderModels,
+      linkTo(methodOn(OrderController.class).getOrderByUserId(clientId)).withSelfRel(),
+      linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders")
+    );
+
+    if (orderModels.isEmpty()) {
+      return new ResponseEntity<>(collectionModel, HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(collectionModel, HttpStatus.OK);
 	}
 
 
@@ -317,7 +247,7 @@ public class OrderController {
 		}
 	)
 	@PutMapping("/{id}")
-	public ResponseEntity<EntityModel<Order>> actualizarOrden(
+	public ResponseEntity<EntityModel<Order>> updateOrder(
     @Parameter(
       name = "id",
       description = "Identificador único de la orden",
@@ -325,16 +255,15 @@ public class OrderController {
       required = true
     )
     @PathVariable Long id,
-    @RequestBody Order orden) {
-    Order updatedOrder = orderService.actualizarOrden(id, orden);
+    @RequestBody Order order) {
+    Order updatedOrder = orderService.updateOrder(id, order);
     if (updatedOrder == null) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     List<Link> links = new ArrayList<>();
-    links.add(linkTo(methodOn(OrderController.class).obtenerPorId(updatedOrder.getId())).withSelfRel());
-    links.add(linkTo(methodOn(OrderController.class).delete(updatedOrder.getId())).withRel("delete-order"));
-    links.add(linkTo(methodOn(OrderController.class).crearPedido(null)).withRel("create-order"));
-    links.add(linkTo(methodOn(OrderController.class).obtenerTodos()).withRel("all-orders"));
+    links.add(linkTo(methodOn(OrderController.class).getOrderById(updatedOrder.getId())).withSelfRel());
+    links.add(linkTo(methodOn(OrderController.class).deleteOrder(updatedOrder.getId())).withRel("delete-order"));
+    links.add(linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders"));
 
     EntityModel<Order> resource = EntityModel.of(updatedOrder, links);
     return ResponseEntity.ok(resource);
@@ -360,15 +289,15 @@ public class OrderController {
 		}
 	)
 	@DeleteMapping("/delete/{orderId}")
-	ResponseEntity<String> delete(
+	ResponseEntity<String> deleteOrder(
 		@Parameter(
 			name = "id",
 			description = "Identificador único de la orden",
 			example = "1",
 			required = true
 		)	
-		@PathVariable Long orderId) {
-		boolean isDeleted = orderService.eliminar(orderId);
+		@PathVariable Long id) {
+		boolean isDeleted = orderService.deleteOrder(id);
 		if(isDeleted){
 			return new ResponseEntity<>("Orden borrada exitosamente", HttpStatus.OK);
 		} else{

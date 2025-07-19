@@ -18,33 +18,28 @@ public class OrderService {
 		this.orderRepository = orderRepository;
 	}
 
-	public List<Order> obtenerTodos() {
+	public List<Order> findAllOrders() {
 		return orderRepository.findAll();
 	}
 
-	public Optional<Order> obtenerPorId(Long id) {
+	public Optional<Order> findOrderById(Long id) {
 		return orderRepository.findById(id);
 	}
 
-	public Order guardar(Order pedido) {
-		return orderRepository.save(pedido);
+	public List<Order> findOrderByClientId(Long clientId) {
+		return orderRepository.findByClientId(clientId);
 	}
 
-	// public List<Order> obtenerPorUserId(Long clientId) {
-	// 	return orderRepository.findByClientId(clientId);
-	// }
-
-
-	public Order actualizarOrden(Long id, Order orden) {
+	public Order updateOrder(Long id, Order order) {
 		if(orderRepository.existsById(id)){
-			orden.setId(id);
-			return orderRepository.save(orden);
+			order.setId(id);
+			return orderRepository.save(order);
 		}   else {
 			return null;
 		}
 	}
 
-	public boolean eliminar(Long id) {
+	public boolean deleteOrder(Long id) {
 		Optional<Order> orderToDelete = orderRepository.findById(id);
 		if(orderToDelete.isPresent()){
 			orderRepository.deleteById(id);

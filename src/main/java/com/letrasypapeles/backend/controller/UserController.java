@@ -24,8 +24,8 @@ public class UserController {
   }
 
   @GetMapping
-  public List<BaseUser> obtenerTodos() {
-    return userService.obtenerTodos();
+  public List<BaseUser> getAllRoles() {
+    return userService.findAllUsers();
   }
   
 }

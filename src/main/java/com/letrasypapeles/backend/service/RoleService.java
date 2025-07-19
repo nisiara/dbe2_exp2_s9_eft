@@ -18,19 +18,15 @@ public class RoleService {
 		this.roleRepository = roleRepository;
 	}
 
-	public List<Role> obtenerTodos() {
+	public List<Role> findAllRoles() {
 		return roleRepository.findAll();
 	}
 
-	// public Optional<Role> obtenerPorNombre(String nombre) {
-	// 	return roleRepository.findByName(nombre);
-	// }
-
-	public Role guardar(Role role) {
+	public Role saveRole(Role role) {
 		return roleRepository.save(role);
 	}
 
-	public boolean eliminar(Long id) {
+	public boolean deleteRole(Long id) {
 		Optional<Role> roleToDelete = roleRepository.findById(id);
 		if(roleToDelete.isPresent()){
 			roleRepository.deleteById(id);

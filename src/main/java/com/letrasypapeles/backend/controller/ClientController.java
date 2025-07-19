@@ -74,42 +74,16 @@ public class ClientController {
 			)
 		}
 	)
-	//@PreAuthorize("hasRole('ADMIN')")
+	
 	@GetMapping
-	// public ResponseEntity<CollectionModel<EntityModel<Client>>> getClients() {
-	public ResponseEntity<List<ClientResponse>> getClients() {
-    
-		List<ClientResponse> clients = clientService.getAll();
+	public ResponseEntity<ClientResponse> getAllClients() {
+		List<ClientResponse> clients = clientService.findAllClients();
 		if (clients.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
-		return new ResponseEntity<>(clients, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 
-
-		// List<EntityModel<Client>> clientModels = clients.stream()
-    //   .map(client -> {
-    //     return EntityModel.of(client,
-    //       linkTo(methodOn(ClientController.class).getById(client.getId())).withSelfRel(),
-    //       linkTo(methodOn(ClientController.class).delete(client.getId())).withRel("delete-client"),
-    //       linkTo(methodOn(ClientController.class).create(null)).withRel("create-client"),
-    //       linkTo(methodOn(ClientController.class).getClients()).withRel("all-clients")
-    //     );
-    //   })
-    //   .collect(Collectors.toList());
-
-			// if (clientModels.isEmpty()) {
-      //   return new ResponseEntity<>(CollectionModel.of(
-      //       clientModels, // La lista de EntityModel estará vacía
-      //       linkTo(methodOn(ClientController.class).getClients()).withSelfRel(),
-      //       linkTo(methodOn(ClientController.class).create(null)).withRel("create-client")
-      //   ), HttpStatus.OK);
-    // }
-
-    // return new ResponseEntity<>(CollectionModel.of(clientModels,
-    //   linkTo(methodOn(ClientController.class).getClients()).withSelfRel(),
-    //   linkTo(methodOn(ClientController.class).create(null)).withRel("create-client")
-    //   ), HttpStatus.OK);
 	}
 
 	/* 
@@ -140,7 +114,7 @@ public class ClientController {
 		}
 	)
 	@GetMapping("/{id}")
-	public ResponseEntity<ClientResponse> getById(
+	public ResponseEntity<ClientResponse> getClientById(
 		@Parameter(
 			name = "id",
 			description = "Identificador único del cliente",
@@ -149,7 +123,7 @@ public class ClientController {
 		)
 		@PathVariable Long id){
 			
-		ClientResponse client = clientService.getById(id);
+		ClientResponse client = clientService.findClientById(id);
 		if (client == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -188,7 +162,7 @@ public class ClientController {
 		}
 	)
 	@DeleteMapping("/{id}")
-	ResponseEntity<Map<String, String>> delete(
+	ResponseEntity<Map<String, String>> deleteClient(
 		@Parameter(
 			name = "id",
 			description = "Identificador único del cliente a eliminar",
@@ -196,7 +170,7 @@ public class ClientController {
 			required = true
 		)
 		@PathVariable Long id){
-		boolean isDeleted = clientService.delete(id);
+		boolean isDeleted = clientService.deleteClient(id);
 		if(isDeleted){
 			Map<String, String> response = new HashMap<>();
 			response.put("message", "Cliente borrado exitosamente");

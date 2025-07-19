@@ -48,7 +48,7 @@ Content-Type: application/json
   "password": "password"
 }
 
-### OBTENER TODOS LOS CLIENTES
+### OBTENER TODOS LOS USUARIOS CON ROL CLIENT
 GET http://localhost:8080/api/client
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuaWNvIiwiaWF0IjoxNzUyODk5MzE1LCJleHAiOjE3NTI5ODU3MTV9.lOXMav_GTASHOdXMoSIL-AIfptBH7wg9gZrAm2ORORNLkvLOnBlifMxlxHrqJ1nYyll3owSaxRHc8YDmX_f84A
 

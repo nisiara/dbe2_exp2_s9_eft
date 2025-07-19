@@ -19,19 +19,19 @@ public class ClientService {
     this.clientRepository = clientRepository;
   }
 
-  public List<ClientResponse> getAll() {
+  public List<ClientResponse> findAllClients() {
     return clientRepository.findAll().stream()
       .map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getFidelityPoints()))
       .toList();
 	}
 
-	public ClientResponse getById(Long id) {
+	public ClientResponse findClientById(Long id) {
     return clientRepository.findById(id)
       .map(client -> new ClientResponse(client.getName(), client.getEmail(), client.getFidelityPoints()))
       .orElseThrow(() -> new RuntimeException("No existe Cliente con el id: " + id));
 	}
 
-  public boolean delete(Long id) {
+  public boolean deleteClient(Long id) {
     Optional<Client> clientToDelete = clientRepository.findById(id);
     if(clientToDelete.isPresent()){
       clientRepository.deleteById(id);
@@ -40,7 +40,7 @@ public class ClientService {
     return false;
 	}
 
-	public Client update(Long id, Client client) {
+	public Client updateClient(Long id, Client client) {
 		if(clientRepository.existsById(id)){
 			client.setId(id);
 			return clientRepository.save(client);

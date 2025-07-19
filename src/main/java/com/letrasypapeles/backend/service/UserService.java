@@ -18,19 +18,19 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public List<BaseUser> obtenerTodos(){
+  public List<BaseUser> findAllUsers(){
     return userRepository.findAll();
   }
 
-  public Optional<BaseUser> obtenerPorId(Long id){
+  public Optional<BaseUser> findUserById(Long id){
     return userRepository.findById(id);
   }
 
-  public Optional<BaseUser> obtenerPorUsername(String username){
+  public Optional<BaseUser> findUserByUsername(String username){
     return userRepository.findByUsername(username);
   }
 
-  public boolean eliminar(Long id) {
+  public boolean deleteUser(Long id) {
 		Optional<BaseUser> userToDelete = userRepository.findById(id);
 		if(userToDelete.isPresent()){
 			userRepository.deleteById(id);

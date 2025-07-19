@@ -21,7 +21,7 @@ public class ProductService {
 		this.productRepository = productRepository;
 	}
 
-	public List<ProductResponse> getAll() {
+	public List<ProductResponse> findAllProducts() {
     return productRepository.findAll().stream()
       .map(product -> new ProductResponse(
         product.getId(),
@@ -33,7 +33,7 @@ public class ProductService {
       .toList();
   }
   
-	public ProductResponse getById(Long id) {
+	public ProductResponse findProductById(Long id) {
     return productRepository.findById(id)
       .map(product -> new ProductResponse(
         product.getId(),
@@ -46,7 +46,7 @@ public class ProductService {
       
   }
 
-  public ProductResponse create(ProductRequest productRequest) {
+  public ProductResponse saveProduct(ProductRequest productRequest) {
     if (productRequest == null || productRequest.getName() == null || productRequest.getSku() == null) {
       throw new IllegalArgumentException("No se puede crear un producto sin mobre o sin sku");
     }
@@ -84,7 +84,7 @@ public class ProductService {
 	}
 
   
-  public ProductResponse update(Long id, ProductRequest productRequest) {
+  public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
     if (!productRepository.existsById(id)) {
       throw new RuntimeException("Producto no encontrado con identificador " + id);
     }

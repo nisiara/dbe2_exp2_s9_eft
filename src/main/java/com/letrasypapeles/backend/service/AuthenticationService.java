@@ -49,7 +49,7 @@ public class AuthenticationService {
       this.adminRepository = adminRepository;
   }
   
-  public AdminResponse createAdmin(AdminRequest adminRequest) {
+  public AdminResponse saveUserAdmin(AdminRequest adminRequest) {
     if(adminRequest == null || adminRequest.getUsername() == null || adminRequest.getPassword() == null) {
       throw new IllegalArgumentException("El usuario debe contener nombre de usuario y contraseña.");
     }
@@ -78,11 +78,11 @@ public class AuthenticationService {
   }
 
 
-  public ClientResponse createClient(ClientRequest adminRequest) {
-    if(adminRequest == null || adminRequest.getUsername() == null || adminRequest.getPassword() == null) {
+  public ClientResponse saveUserClient(ClientRequest clientRequest) {
+    if(clientRequest == null || clientRequest.getUsername() == null || clientRequest.getPassword() == null) {
       throw new IllegalArgumentException("El usuario debe contener nombre de usuario y contraseña.");
     }
-    if (baseUserRepository.existsByUsername(adminRequest.getUsername())) {
+    if (baseUserRepository.existsByUsername(clientRequest.getUsername())) {
       throw new IllegalArgumentException("El usuario ya está registrado.");
     }
       
@@ -95,11 +95,11 @@ public class AuthenticationService {
       throw new RuntimeException("El rol CLIENT no se encontró en la base de datos.");
     }
    
-    adminUser.setName(adminRequest.getName());
-    adminUser.setEmail(adminRequest.getEmail());
-    adminUser.setUsername(adminRequest.getUsername());
-    adminUser.setPassword(passwordEncoder.encode(adminRequest.getPassword()));
-    adminUser.setFidelityPoints(adminRequest.getFidelityPoints());
+    adminUser.setName(clientRequest.getName());
+    adminUser.setEmail(clientRequest.getEmail());
+    adminUser.setUsername(clientRequest.getUsername());
+    adminUser.setPassword(passwordEncoder.encode(clientRequest.getPassword()));
+    adminUser.setFidelityPoints(clientRequest.getFidelityPoints());
 
     clientRepository.save(adminUser);
 
@@ -108,7 +108,7 @@ public class AuthenticationService {
   }
 
 
-  public DeveloperResponse createDeveloper(DeveloperRequest developerRequest) {
+  public DeveloperResponse saveUserDeveloper(DeveloperRequest developerRequest) {
     if (developerRequest == null || developerRequest.getUsername() == null || developerRequest.getUsername() == null) {
       throw new IllegalArgumentException("El usuario debe contener nombre de usuario y contraseña.");
     }
