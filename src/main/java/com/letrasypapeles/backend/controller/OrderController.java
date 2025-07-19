@@ -18,6 +18,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
 @RequestMapping("/api/order")
 @Tag(name = " ** Endpoints Orden **", description = "Operaciones relacionadas con las Órdenes")
 public class OrderController {

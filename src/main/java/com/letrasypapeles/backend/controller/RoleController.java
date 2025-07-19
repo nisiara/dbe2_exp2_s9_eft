@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 // @RestController
+//@PreAuthorize("hasRole('ADMIN')")
 // @RequestMapping("/api/role")
-// @PreAuthorize("hasRole('GERENTE')")
 // @Tag(name = "Roles", description = "Operaciones relacionadas con los roles")
 // public class RoleController {
 

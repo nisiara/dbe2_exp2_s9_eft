@@ -40,9 +40,13 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authz -> authz
 				.requestMatchers("/api/authentication/register").permitAll()
 				.requestMatchers("/api/authentication/login").permitAll()
-				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").hasRole("DEVELOPER")
+				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
 				.requestMatchers("/api/client").hasAnyRole("ADMIN", "CLIENT")
-				.requestMatchers("/api/developer").hasAnyRole("ADMIN", "DEVELOPER")
+				.requestMatchers("/api/order").hasAnyRole("ADMIN", "CLIENT")
+				.requestMatchers("/api/product").hasAnyRole("ADMIN", "CLIENT")
+				.requestMatchers("/api/role").hasRole("ADMIN")
+				.requestMatchers("/api/user").hasRole("ADMIN")
+				.requestMatchers("/api/developer").hasRole( "DEVELOPER")
 				
 				.anyRequest().authenticated()
 				
