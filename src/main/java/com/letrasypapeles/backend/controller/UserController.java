@@ -3,6 +3,8 @@ package com.letrasypapeles.backend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,12 @@ public class UserController {
   }
 
   @GetMapping
-  public List<BaseUser> getAllRoles() {
-    return userService.findAllUsers();
+  public ResponseEntity<BaseUser> getAllUsers() {
+    List<BaseUser> users = userService.findAllUsers();
+    if (users.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    return new ResponseEntity<>(HttpStatus.OK);
   }
   
 }
