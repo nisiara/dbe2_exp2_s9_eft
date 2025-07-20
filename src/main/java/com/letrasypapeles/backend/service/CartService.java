@@ -72,7 +72,7 @@ public class CartService {
       }  
     }
 
-    // 3. Obtener cliente (añade esto en CartRequest)
+    // 3. Obtener cliente
     Client client = clientRepository.findById(cartRequest.getClientId())
       .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 

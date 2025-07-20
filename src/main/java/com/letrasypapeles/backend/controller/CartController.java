@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.letrasypapeles.backend.dto.CartRequest;
 import com.letrasypapeles.backend.dto.CartResponse;
 import com.letrasypapeles.backend.dto.OrderResponse;
-import com.letrasypapeles.backend.dto.ProductRequest;
-import com.letrasypapeles.backend.dto.ProductResponse;
 import com.letrasypapeles.backend.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
+@PreAuthorize("hasRole('CLIENT')")
 @RequestMapping("/api/cart")
 @Tag(name = "Cart", description = "Operaciones relacionadas con el carro de compras")
 public class CartController {

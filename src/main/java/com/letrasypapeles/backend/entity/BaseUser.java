@@ -19,9 +19,9 @@ public class BaseUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String username;
 	private String password;
 	private String name;
-	private String username;
 
 	@ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role_id", nullable = false)

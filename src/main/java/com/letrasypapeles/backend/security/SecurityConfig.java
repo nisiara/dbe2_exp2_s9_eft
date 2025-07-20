@@ -39,7 +39,11 @@ public class SecurityConfig {
 			)
 			.authorizeHttpRequests(authz -> authz
 				.requestMatchers("/api/authentication/register").permitAll()
+
+				//Generar token jwt usuario logueado (username y password)
 				.requestMatchers("/api/authentication/login").permitAll()
+
+
 				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
 				.requestMatchers("/api/client").hasAnyRole("ADMIN", "CLIENT")
 				.requestMatchers("/api/order").hasAnyRole("ADMIN", "CLIENT")
