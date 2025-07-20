@@ -107,42 +107,42 @@ public class OrderServiceTest {
     verify(orderRepository, times(1)).findById(2L);
   }
 
-  @Test
-  public void testFindOrderByClientId_Found() {
-    // Prepare a list of orders for a specific client
-    List<Order> clientOrders = List.of(order);
+  // @Test
+  // public void testFindOrderByClientId_Found() {
+  //   // Prepare a list of orders for a specific client
+  //   List<Order> clientOrders = List.of(order);
 
-    // Mock the behavior of orderRepository.findByClientId()
-    when(orderRepository.findByClientId(100L)).thenReturn(clientOrders);
+  //   // Mock the behavior of orderRepository.findByClientId()
+  //   when(orderRepository.findByClientId(100L)).thenReturn(clientOrders);
 
-    // Call the service method
-    List<Order> actualOrders = orderService.findOrderByClientId(100L);
+  //   // Call the service method
+  //   List<Order> actualOrders = orderService.findOrderByClientId(100L);
 
-    // Assert that the returned list matches the expected list
-    assertNotNull(actualOrders);
-    assertEquals(clientOrders.size(), actualOrders.size());
-    assertEquals(clientOrders.get(0).getId(), actualOrders.get(0).getId());
+  //   // Assert that the returned list matches the expected list
+  //   assertNotNull(actualOrders);
+  //   assertEquals(clientOrders.size(), actualOrders.size());
+  //   assertEquals(clientOrders.get(0).getId(), actualOrders.get(0).getId());
 
-    // Verify that orderRepository.findByClientId() was called
-    verify(orderRepository, times(1)).findByClientId(100L);
-  }
+  //   // Verify that orderRepository.findByClientId() was called
+  //   verify(orderRepository, times(1)).findByClientId(100L);
+  // }
 
-  @Test
-  public void testFindOrderByClientId_NoOrders() {
-    // Mock the behavior to return an empty list when no orders are found for the
-    // client
-    when(orderRepository.findByClientId(101L)).thenReturn(Collections.emptyList());
+  // @Test
+  // public void testFindOrderByClientId_NoOrders() {
+  //   // Mock the behavior to return an empty list when no orders are found for the
+  //   // client
+  //   when(orderRepository.findByClientId(101L)).thenReturn(Collections.emptyList());
 
-    // Call the service method
-    List<Order> actualOrders = orderService.findOrderByClientId(101L);
+  //   // Call the service method
+  //   List<Order> actualOrders = orderService.findOrderByClientId(101L);
 
-    // Assert that an empty list is returned
-    assertNotNull(actualOrders);
-    assertTrue(actualOrders.isEmpty());
+  //   // Assert that an empty list is returned
+  //   assertNotNull(actualOrders);
+  //   assertTrue(actualOrders.isEmpty());
 
-    // Verify the repository method was called
-    verify(orderRepository, times(1)).findByClientId(101L);
-  }
+  //   // Verify the repository method was called
+  //   verify(orderRepository, times(1)).findByClientId(101L);
+  // }
 
   @Test
   public void testUpdateOrder_Success() {

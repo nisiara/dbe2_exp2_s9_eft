@@ -153,61 +153,61 @@ public class OrderController {
 	 * OBTENER ÓRDENES POR ID DE CLIENTE
 	 * 
 	*/
-	@Operation(
-		summary = "Obtiene órdenes por ID de cliente",
-		description = "Este endpoint devuelve una lista de órdenes asociadas a un cliente específico",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "Órdenes obtenidas exitosamente",
-				content = @Content(
-					mediaType = "application/json",
-					schema = @Schema(implementation = OrderResponse.class)
-				)
-			),
-			@ApiResponse(
-				responseCode = "404",
-				description = "No se encontraron órdenes para el cliente especificado"
-			),
-			@ApiResponse(
-				responseCode = "500",
-				description = "Error interno del servidor"
-			)
-		}
-	)
-	@GetMapping("/client/{clientId}")
-	public ResponseEntity<CollectionModel<EntityModel<Order>>> getOrderByUserId(
-    @Parameter(
-      name = "userId",
-      description = "Identificador único del cliente",
-      example = "1",
-      required = true
-    )
-    @PathVariable Long clientId) {
-    List<Order> ordersByUser = orderService.findOrderByClientId(clientId);
+	// @Operation(
+	// 	summary = "Obtiene órdenes por ID de cliente",
+	// 	description = "Este endpoint devuelve una lista de órdenes asociadas a un cliente específico",
+	// 	responses = {
+	// 		@ApiResponse(
+	// 			responseCode = "200",
+	// 			description = "Órdenes obtenidas exitosamente",
+	// 			content = @Content(
+	// 				mediaType = "application/json",
+	// 				schema = @Schema(implementation = OrderResponse.class)
+	// 			)
+	// 		),
+	// 		@ApiResponse(
+	// 			responseCode = "404",
+	// 			description = "No se encontraron órdenes para el cliente especificado"
+	// 		),
+	// 		@ApiResponse(
+	// 			responseCode = "500",
+	// 			description = "Error interno del servidor"
+	// 		)
+	// 	}
+	// )
+	// @GetMapping("/client/{clientId}")
+	// public ResponseEntity<CollectionModel<EntityModel<Order>>> getOrderByUserId(
+  //   @Parameter(
+  //     name = "userId",
+  //     description = "Identificador único del cliente",
+  //     example = "1",
+  //     required = true
+  //   )
+  //   @PathVariable Long clientId) {
+  //   List<Order> ordersByUser = orderService.findOrderByClientId(clientId);
 
-    List<EntityModel<Order>> orderModels = ordersByUser.stream()
-      .map(order -> {
-        List<Link> links = new ArrayList<>();
-        links.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
-        links.add(linkTo(methodOn(OrderController.class).updateOrder(order.getId(), null)).withRel("update-order"));
-        links.add(linkTo(methodOn(OrderController.class).deleteOrder(order.getId())).withRel("delete-order"));
+  //   List<EntityModel<Order>> orderModels = ordersByUser.stream()
+  //     .map(order -> {
+  //       List<Link> links = new ArrayList<>();
+  //       links.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
+  //       links.add(linkTo(methodOn(OrderController.class).updateOrder(order.getId(), null)).withRel("update-order"));
+  //       links.add(linkTo(methodOn(OrderController.class).deleteOrder(order.getId())).withRel("delete-order"));
         
-        return EntityModel.of(order, links);
-      })
-      .collect(Collectors.toList());
+  //       return EntityModel.of(order, links);
+  //     })
+  //     .collect(Collectors.toList());
 
-    CollectionModel<EntityModel<Order>> collectionModel = CollectionModel.of(orderModels,
-      linkTo(methodOn(OrderController.class).getOrderByUserId(clientId)).withSelfRel(),
-      linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders")
-    );
+  //   CollectionModel<EntityModel<Order>> collectionModel = CollectionModel.of(orderModels,
+  //     linkTo(methodOn(OrderController.class).getOrderByUserId(clientId)).withSelfRel(),
+  //     linkTo(methodOn(OrderController.class).getAllOrders()).withRel("all-orders")
+  //   );
 
-    if (orderModels.isEmpty()) {
-      return new ResponseEntity<>(collectionModel, HttpStatus.OK);
-    }
+  //   if (orderModels.isEmpty()) {
+  //     return new ResponseEntity<>(collectionModel, HttpStatus.OK);
+  //   }
 
-    return new ResponseEntity<>(collectionModel, HttpStatus.OK);
-	}
+  //   return new ResponseEntity<>(collectionModel, HttpStatus.OK);
+	// }
 
 
 	/* 

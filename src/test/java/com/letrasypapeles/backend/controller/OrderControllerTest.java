@@ -71,24 +71,24 @@ public class OrderControllerTest {
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
 
-  @Test
-  public void testGetOrderByUserId() {
-    List<Order> orders = List.of(order);
-    when(orderService.findOrderByClientId(1L)).thenReturn(orders);
+  // @Test
+  // public void testGetOrderByUserId() {
+  //   List<Order> orders = List.of(order);
+  //   when(orderService.findOrderByClientId(1L)).thenReturn(orders);
 
-    ResponseEntity<CollectionModel<EntityModel<Order>>> response = orderController.getOrderByUserId(1L);
+  //   ResponseEntity<CollectionModel<EntityModel<Order>>> response = orderController.getOrderByUserId(1L);
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
+  //   assertEquals(HttpStatus.OK, response.getStatusCode());
+  // }
 
-  @Test
-  public void testGetOrderByUserId_EmptyList() {
-    when(orderService.findOrderByClientId(1L)).thenReturn(List.of());
+  // @Test
+  // public void testGetOrderByUserId_EmptyList() {
+  //   when(orderService.findOrderByClientId(1L)).thenReturn(List.of());
 
-    ResponseEntity<CollectionModel<EntityModel<Order>>> response = orderController.getOrderByUserId(1L);
+  //   ResponseEntity<CollectionModel<EntityModel<Order>>> response = orderController.getOrderByUserId(1L);
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
+  //   assertEquals(HttpStatus.OK, response.getStatusCode());
+  // }
 
   @Test
   public void testUpdateOrder_Success() {

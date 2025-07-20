@@ -26,9 +26,9 @@ public class OrderService {
 		return orderRepository.findById(id);
 	}
 
-	public List<Order> findOrderByClientId(Long clientId) {
-		return orderRepository.findByClientId(clientId);
-	}
+	// public List<Order> findOrderByClientId(Long clientId) {
+	// 	return orderRepository.findByClientId(clientId);
+	// }
 
 	public Order updateOrder(Long id, Order order) {
 		if(orderRepository.existsById(id)){
