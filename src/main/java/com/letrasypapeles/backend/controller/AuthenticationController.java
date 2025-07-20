@@ -178,7 +178,6 @@ public class AuthenticationController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-
 	
 	@Operation(
     summary = "Registra un usuario tipo cliente",

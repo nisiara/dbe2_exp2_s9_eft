@@ -20,13 +20,21 @@ public class AdminService {
 
   public List<AdminResponse> findAllAdmins() {
     return adminRepository.findAll().stream()
-      .map(admin -> new AdminResponse(admin.getUsername(), admin.getMessage()))
+      .map(admin -> AdminResponse.builder()
+        .id(admin.getId())
+        .username(admin.getUsername())
+        .message(admin.getMessage())
+      .build())
       .toList();
   }
 
   public AdminResponse findAdminById(Long id) {
     return adminRepository.findById(id)
-      .map(admin -> new AdminResponse(admin.getUsername(), admin.getMessage()))
+      .map(admin -> AdminResponse.builder()
+        .id(admin.getId())
+        .username(admin.getUsername())
+        .message(admin.getMessage())
+      .build())
       .orElseThrow(() -> new RuntimeException("No existe Admin con el id: " + id));
   }
 

@@ -23,7 +23,7 @@ public class ProductService {
 
 	public List<ProductResponse> findAllProducts() {
     return productRepository.findAll().stream()
-      .map(product -> ProductResponse.builder() // Usar el builder aquí
+      .map(product -> ProductResponse.builder()
         .id(product.getId())
         .name(product.getName())
         .description(product.getDescription())

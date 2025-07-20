@@ -73,7 +73,7 @@ public class AuthenticationService {
 
     adminRepository.save(admin);
 
-    return new AdminResponse(admin.getUsername(), admin.getMessage());
+    return new AdminResponse(admin.getId(), admin.getUsername(), admin.getMessage());
 
   }
 

@@ -38,7 +38,7 @@ public class AdminServiceTest {
     admin.setMessage("Test Message");
 
     // Initialize an AdminResponse DTO for testing
-    adminResponse = new AdminResponse("adminTest", "Test Message");
+    adminResponse = new AdminResponse(1L, "adminTest", "Test Message");
   }
 
   @Test
