@@ -68,4 +68,11 @@ public class RoleControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("Rol eliminado exitosamente", response.getBody());
   }
+
+  @Test
+  public void testDeleteRole_NotFound() {
+    when(roleService.deleteRole(1L)).thenReturn(false); 
+    ResponseEntity<String> response = roleController.deleteRole(1L);
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+  }
 }

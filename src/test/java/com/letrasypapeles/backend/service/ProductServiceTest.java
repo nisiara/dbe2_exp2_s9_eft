@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -212,6 +214,33 @@ public class ProductServiceTest {
 
     verifyNoInteractions(productRepository);
   }
+
+  @Test
+  public void testCreateProduct_DuplicateSku() {
+   
+    ProductRequest productRequest = new ProductRequest();
+    productRequest.setName("Test Product");
+    productRequest.setSku("DUPLICATE-SKU");
+    productRequest.setPrice(25.0);
+    productRequest.setStock(5);
+    productRequest.setDescription("Test Description");
+
+    // Mock that the SKU already exists in the repository
+    when(productRepository.existsBySku("DUPLICATE-SKU")).thenReturn(true);
+
+    // Assert that calling the service method throws IllegalArgumentException
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        productService.saveProduct(productRequest);
+    });
+
+    // Assert the exception message
+    assertEquals("El SKU ya está registrado", exception.getMessage());
+
+    // Verify interactions
+    verify(productRepository, times(1)).existsBySku("DUPLICATE-SKU");
+    // Verify that save was NOT called since validation failed
+    verify(productRepository, never()).save(any(Product.class));
+}
 
   @Test
   public void testDeleteProduct_Success() {

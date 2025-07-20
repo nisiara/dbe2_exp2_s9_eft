@@ -111,6 +111,8 @@ public class AuthenticationServiceTest {
     verify(clientRepository, times(1)).save(any(Client.class));
   }
 
+  
+
   @Test
   public void testSaveUserClient_UsernameAlreadyExists() {
     // Mock the behavior of baseUserRepository to indicate username already exists
@@ -165,6 +167,14 @@ public class AuthenticationServiceTest {
       authenticationService.saveUserClient(invalidClientRequest2);
     });
     assertEquals("El usuario debe contener nombre de usuario y contraseña.", exception3.getMessage());
+
+    // Test with null username
+    ClientRequest invalidClientRequest3 = new ClientRequest("Name", "email@test.com", null, "password", 10);
+    IllegalArgumentException exception4 = assertThrows(IllegalArgumentException.class, () -> {
+      authenticationService.saveUserClient(invalidClientRequest3);
+    });
+    assertEquals("El usuario debe contener nombre de usuario y contraseña.", exception4.getMessage());
+
 
     verifyNoInteractions(baseUserRepository, roleRepository, passwordEncoder, clientRepository);
   }
@@ -254,7 +264,7 @@ public class AuthenticationServiceTest {
     assertEquals("El usuario debe contener nombre de usuario y contraseña.", exception2.getMessage());
 
     // Test with null password
-    AdminRequest invalidAdminRequest2 = new AdminRequest("Name", "user", null, "msg");
+    AdminRequest invalidAdminRequest2 = new AdminRequest(null, "nombre", "username", "msg");
     IllegalArgumentException exception3 = assertThrows(IllegalArgumentException.class, () -> {
       authenticationService.saveUserAdmin(invalidAdminRequest2);
     });

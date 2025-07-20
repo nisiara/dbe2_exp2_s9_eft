@@ -12,6 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class AdminControllerTest {
 
@@ -30,15 +33,15 @@ public class AdminControllerTest {
       adminResponse.setMessage("This is a test admin");
     }
 
-    // @Test
-    // public void testGetAllAdmins() {
-    //     List<AdminResponse> expected = List.of(adminResponse);
-    //     when(adminService.findAllAdmins()).thenReturn(expected);
-        
-    //     List<AdminResponse> result = adminController.getAllAdmins();
-        
-    //     assertEquals(expected, result);
-    // }
+    @Test
+    public void testGetAllAdmins() {
+      List<AdminResponse> admins = Arrays.asList(adminResponse); // acepta null
+      when(adminService.findAllAdmins()).thenReturn(admins);
+    
+      List<AdminResponse> result = adminController.getAllAdmins();
+    
+      assertEquals(admins, result);
+    }
 
     @Test
     public void testGetAdminById() {

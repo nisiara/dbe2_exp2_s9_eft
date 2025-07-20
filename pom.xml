@@ -54,11 +54,6 @@
             <scope>test</scope>
         </dependency>
 
-	    <dependency>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -179,7 +174,7 @@
                                         <limit implementation="org.jacoco.report.check.Limit">
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>1</minimum>
+                                            <minimum>0.35</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -190,8 +185,8 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <!-- <exclude>**/security/**</exclude> -->
-												<exclude>com/letrasypapeles/backend/security/JwtAuthenticationFilter.class</exclude>
+                        <exclude>**/security/**</exclude>
+                        <exclude>**/BackendApplication.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -299,5 +301,90 @@ public class CartServiceTest {
     assertTrue(response.isEmpty());
 
     verify(orderRepository, times(1)).findById(99L);
+  }
+
+  @Test
+  public void testProcessCartAndGenerateReceipt_ClientNotFound() {
+    // Create a CartRequest with a client that doesn't exist
+    // Use a different CartRequest to isolate the client validation
+    CartItemRequest itemRequest = new CartItemRequest(101L, 1); 
+    CartRequest clientNotFoundRequest = new CartRequest(999L, Collections.singletonList(itemRequest)); // Client ID 999 doesn't exist
+    
+    // Mock client not found, but product found
+    when(clientRepository.findById(999L)).thenReturn(Optional.empty());
+    when(productRepository.findById(101L)).thenReturn(Optional.of(product1));
+
+    // Assert that calling the service method throws EntityNotFoundException
+    EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+        cartService.processCartAndGenerateReceipt(clientNotFoundRequest);
+    });
+
+    // Assert the exception message
+    assertEquals("Cliente no encontrado", exception.getMessage());
+
+    // Verify that clientRepository was called for the non-existent client
+    verify(clientRepository, times(1)).findById(999L);
+    
+    // Product might be called first depending on your service implementation
+    // This verification might need adjustment based on your actual code flow
+  }
+
+  @Test
+  public void testConvertToOrderResponse_WithNullCart() {
+    // Create an order with null cart to test line 7 of convertToOrderResponse
+    Order orderWithNullCart = new Order();
+    orderWithNullCart.setId(99L);
+    orderWithNullCart.setOrderNumber("ORD-NULL-CART");
+    orderWithNullCart.setIssueDate(LocalDateTime.now());
+    orderWithNullCart.setTotalAmount(100.0);
+    orderWithNullCart.setCart(null); // Set cart to null
+
+    // Mock the order repository to return the order with null cart
+    when(orderRepository.findById(99L)).thenReturn(Optional.of(orderWithNullCart));
+
+    // Call the service method that uses convertToOrderResponse internally
+    Optional<OrderResponse> response = cartService.getOrderResponseById(99L);
+
+    // Verify the response
+    assertTrue(response.isPresent());
+    assertEquals(99L, response.get().getId());
+    assertEquals("ORD-NULL-CART", response.get().getOrderNumber());
+    assertEquals(100.0, response.get().getTotalAmount());
+    assertNull(response.get().getCartId()); // Should be null when cart is null
+
+    verify(orderRepository, times(1)).findById(99L);
+}
+
+  @Test
+  public void testConvertToCartResponse_WithNullOrder() {
+    // Create a cart with null order to test line 9 of convertToCartResponse
+    Cart cartWithNullOrder = new Cart();
+    cartWithNullOrder.setId(88L);
+    cartWithNullOrder.setClient(client);
+    cartWithNullOrder.setCartItems(new ArrayList<>());
+    cartWithNullOrder.setOrder(null); // Set order to null
+
+    // Add a cart item to make the test more realistic
+    CartItem cartItem = new CartItem();
+    cartItem.setId(2L);
+    cartItem.setProduct(product1);
+    cartItem.setQuantity(1);
+    cartItem.setPrice(product1.getPrice());
+    cartItem.setCart(cartWithNullOrder);
+    cartWithNullOrder.getCartItems().add(cartItem);
+
+    // Mock the cart repository to return the cart with null order
+    when(cartRepository.findById(88L)).thenReturn(Optional.of(cartWithNullOrder));
+
+    // Call the service method that uses convertToCartResponse internally
+    Optional<CartResponse> response = cartService.getCartResponseById(88L);
+
+    // Verify the response
+    assertTrue(response.isPresent());
+    assertEquals(88L, response.get().getId());
+    assertEquals(1, response.get().getCartItems().size());
+    assertNull(response.get().getOrderId()); // Should be null when order is null
+
+    verify(cartRepository, times(1)).findById(88L);
   }
 }

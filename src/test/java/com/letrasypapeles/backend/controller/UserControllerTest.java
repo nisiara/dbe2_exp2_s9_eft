@@ -64,4 +64,13 @@ class UserControllerTest {
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
+
+  @Test
+	public void testGetAllUsers_NoContent() {
+		when(userService.findAllUsers()).thenReturn(List.of());
+
+		ResponseEntity<BaseUser> response = userController.getAllUsers();
+
+		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+	}
 }
