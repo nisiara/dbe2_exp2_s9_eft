@@ -46,6 +46,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/product").hasAnyRole("ADMIN", "CLIENT")
 				.requestMatchers("/api/role").hasRole("ADMIN")
 				.requestMatchers("/api/user").hasRole("ADMIN")
+				.requestMatchers("/api/cart").hasRole("CLIENT")
 				.requestMatchers("/api/developer").hasRole( "DEVELOPER")
 				
 				.anyRequest().authenticated()

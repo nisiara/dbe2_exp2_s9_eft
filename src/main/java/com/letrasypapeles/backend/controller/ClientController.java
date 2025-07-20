@@ -33,7 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
 @RequestMapping("/api/client")
-@Tag(name = "** Endpoints Cliente **", description = "Operaciones relacionadas con la entidad Cliente")
+@Tag(name = "Client", description = "Operaciones relacionadas con la entidad Cliente")
 public class ClientController {
 
 	private ClientService clientService;
@@ -78,7 +78,7 @@ public class ClientController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity(clients, HttpStatus.OK);
 
 	}
 
@@ -96,7 +96,7 @@ public class ClientController {
 				description = "Cliente encontrado exitosamente",
 				content = @Content(
 					mediaType = "application/json",
-					schema = @Schema(implementation = Client.class)
+					schema = @Schema(implementation = ClientResponse.class)
 				)
 			),
 			@ApiResponse(

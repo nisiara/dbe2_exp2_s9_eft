@@ -12,6 +12,12 @@ import com.letrasypapeles.backend.security.jwt.JwtGenerator;
 import com.letrasypapeles.backend.service.AuthenticationService;
 import com.letrasypapeles.backend.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/authentication")
-@Tag(name = "Autenticación", description = "Operaciones registrar y autenticar usuarios'")
+@Tag(name = "Autenticación", description = "Operaciones registrar y autenticar usuarios")
 public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	private JwtGenerator jwtGenerator;
@@ -45,6 +51,68 @@ public class AuthenticationController {
 		this.authenticationService = authenticationService;
 	}
 
+	@Operation(
+		summary = "Obtención de token de autenticación",
+		description = "Este endpoint devuelve un token JWT para la autenticación de usuarios",
+		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Datos necesarios para la autenticación del usuario",
+			required = true,
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = AdminRequest.class),
+				examples = {
+					@ExampleObject(
+						name = "Ejemplo login developer",
+						summary = "Inicio de sesión de un usuario con rol de developer",
+						value = """
+            {
+							"username": "nico",
+							"password": "password"
+						}
+						"""
+					),
+					@ExampleObject(
+						name = "Ejemplo login cliente",
+						summary = "Inicio de sesión de un usuario con rol de cliente",
+						value = """
+						{
+							"username": "juanito",
+							"password": "password"
+						}
+						"""
+					),
+					@ExampleObject(
+						name = "Ejemplo login administrador",
+						summary = "Inicio de sesión de un usuario con rol de administrador",
+						value = """
+						{
+							"username": "admin",
+							"password": "password"
+						}
+						"""
+					)
+				}
+			)
+		),
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Token obtenido exitosamente",
+				content = @Content(
+					mediaType = "application/json",
+					array = @ArraySchema(schema = @Schema(implementation = AuthenticationResponse.class))
+				)
+			),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Solicitud incorrecta, verifique las credenciales proporcionadas",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = String.class)
+				)
+			)
+		}
+	)
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
 		Authentication authentication = authenticationManager.authenticate(
@@ -55,6 +123,51 @@ public class AuthenticationController {
 			return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
 
+
+	@Operation(
+    summary = "Registra un usuario tipo administrador",
+    description = "Este endpoint permite crear un nuevo usuario con rol de administrador",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Datos del usuario administrador a registrar",
+			required = true,
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = AdminRequest.class),
+				examples = {
+					@ExampleObject(
+						name = "Ejemplo",
+						summary = "Registro de un usuario administrador",
+						value = """
+            {
+							"name": "administrador",
+							"username": "admin",
+							"password": "password",
+							"message": "Soy el mas pulento de todos"
+						}
+						"""
+					)
+				}
+			)
+		),
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "Usuario administrador registrado exitosamente",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = AdminResponse.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Solicitud incorrecta, verifique los datos proporcionados",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = String.class)
+				)
+			)
+		}
+	)
 	@PostMapping("/register/admin")
 	public ResponseEntity<AdminResponse> registerAdmin(@RequestBody AdminRequest adminRequest) {
 		try {
@@ -66,6 +179,52 @@ public class AuthenticationController {
 		}
 	}
 
+	
+	@Operation(
+    summary = "Registra un usuario tipo cliente",
+    description = "Este endpoint permite crear un nuevo usuario con rol de cliente",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Datos del usuario cliente a registrar",
+			required = true,
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = ClientRequest.class),
+				examples = {
+					@ExampleObject(
+						name = "Ejemplo",
+						summary = "Registro de un usuario cliente",
+						value = """
+            {
+							"name": "juan",
+							"username": "juanito",
+							"email": "juanin@correo.com",
+							"password": "password",
+							"fidelityPoints": 100
+						}
+						"""
+					)
+				}
+			)
+		),
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "Usuario cliente registrado exitosamente",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = ClientResponse.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Solicitud incorrecta, verifique los datos proporcionados",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = String.class)
+				)
+			)
+		}
+	)
 	@PostMapping("/register/client")
 	 public ResponseEntity<ClientResponse> registerClient(@RequestBody ClientRequest clientRequest) {
 		try {
@@ -77,6 +236,50 @@ public class AuthenticationController {
   	}
   }
 
+	@Operation(
+    summary = "Registra un usuario tipo developer",
+    description = "Este endpoint permite crear un nuevo usuario con rol de developer",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Datos del usuario developer a registrar",
+			required = true,
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = DeveloperRequest.class),
+				examples = {
+					@ExampleObject(
+						name = "Ejemplo",
+						summary = "Registro de un usuario developer",
+						value = """
+            {
+							"name": "nicolas",
+							"password": "password",
+							"username": "nico",
+							"position": "frontend"
+						}
+						"""
+					)
+				}
+			)
+		),
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "Usuario developer registrado exitosamente",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = ClientResponse.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Solicitud incorrecta, verifique los datos proporcionados",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = String.class)
+				)
+			)
+		}
+	)
 	@PostMapping("/register/developer")
 	 public ResponseEntity<DeveloperResponse> registerDeveloper(@RequestBody DeveloperRequest developerRequest) {
 		try {

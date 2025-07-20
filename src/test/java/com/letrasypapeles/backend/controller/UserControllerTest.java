@@ -60,17 +60,17 @@ class UserControllerTest {
     List<BaseUser> users = List.of(user);
     when(userService.findAllUsers()).thenReturn(users);
 
-    ResponseEntity<BaseUser> response = userController.getAllUsers();
+    List<BaseUser> response = userController.getAllUsers();
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(users, response);
   }
 
   @Test
 	public void testGetAllUsers_NoContent() {
 		when(userService.findAllUsers()).thenReturn(List.of());
 
-		ResponseEntity<BaseUser> response = userController.getAllUsers();
+		List<BaseUser> response = userController.getAllUsers();
 
-		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		assertEquals(List.of(), response);
 	}
 }

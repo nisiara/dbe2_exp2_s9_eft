@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
 @RequestMapping("/api/order")
-@Tag(name = " ** Endpoints Orden **", description = "Operaciones relacionadas con las Órdenes")
+@Tag(name = " Order", description = "Operaciones relacionadas con las Órdenes")
 public class OrderController {
 
 	private OrderService orderService;
@@ -55,7 +55,7 @@ public class OrderController {
 				description = "Lista de órdenes obtenida exitosamente",
 				content = @Content(
 					mediaType = "application/json",
-					schema = @Schema(implementation = Order.class)
+					schema = @Schema(implementation = OrderResponse.class)
 				)
 			),
 			@ApiResponse(

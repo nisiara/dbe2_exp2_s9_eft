@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @RestController
 @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
 @RequestMapping("/api/product")
-@Tag(name = "** Endpoints Producto **", description = "Operaciones relacionadas con los productos")
+@Tag(name = "Product", description = "Operaciones relacionadas con los productos")
 public class ProductController {
 
 	private ProductService productService;
@@ -52,7 +52,7 @@ public class ProductController {
    * 
   */
   @Operation(
-    summary = "Obtiene una lista de todlos los productos",
+    summary = "Obtiene una lista de todos los productos",
     description = "Este endpoint devuelve una lista completa de todas los productos registradas en el sistema",
     responses = {
       @ApiResponse(

@@ -1,3 +1,4 @@
+
 ### OBTENER TODOS LOS USUARIOS
 GET http://localhost:8080/api/user
 Content-Type: application/json
@@ -8,35 +9,11 @@ POST http://localhost:8080/api/authentication/register/admin
 Content-Type: application/json
 
 {
-  "name": "administrador",
-  "username": "admin",
+  "name": "administrador desde api",
+  "username": "admin-api",
   "password": "password",
-  "message": "Soy el mas pulento de todos"
+  "message": "Soy un administrador creado desde la API",
 
-}
-
-
-### CREAR USUARIO -- ROL CLIENTE
-POST http://localhost:8080/api/authentication/register/client
-Content-Type: application/json
-
-{
-  "name": "juan",
-  "username": "juanito",
-  "email": "juanin@correo.com",
-  "password": "password",
-  "fidelityPoints": 100
-}
-
-### CREAR USUARIO -- ROL DEVELOPER
-POST http://localhost:8080/api/authentication/register/developer
-Content-Type: application/json
-
-{
-  "name": "nicolas",
-  "password": "password",
-  "username": "nico",
-  "position": "frontend"
 }
 
 ### LOGIN - OBTENER TOKEN
@@ -44,51 +21,61 @@ POST http://localhost:8080/api/authentication/login
 Content-Type: application/json
 
 {
-  "username": "nico",
+  "username": "juanito",
   "password": "password"
 }
 
-### OBTENER TODOS LOS USUARIOS CON ROL CLIENT
+### OBTENER TODOS LOS USUARIOS CON ROL CLIENT (SOLO ADMIN)
 GET http://localhost:8080/api/client
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuaWNvIiwiaWF0IjoxNzUyODk5MzE1LCJleHAiOjE3NTI5ODU3MTV9.lOXMav_GTASHOdXMoSIL-AIfptBH7wg9gZrAm2ORORNLkvLOnBlifMxlxHrqJ1nYyll3owSaxRHc8YDmX_f84A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyODI4OSwiZXhwIjoxNzUzMTE0Njg5fQ.OyJsuoSM28v4eS8tfhqi1EG92c3y2wltEc6R-I4vkA_C1LSMqk4aRKtxd6NjOfNONdleVUusmlBk0k0OpgApOQ
+
+
+### OBTENER TODOS LOS USUARIOS INDEPENDIENTE DEL ROL (SOLO ADMIN)
+GET http://localhost:8080/api/user
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyODI4OSwiZXhwIjoxNzUzMTE0Njg5fQ.OyJsuoSM28v4eS8tfhqi1EG92c3y2wltEc6R-I4vkA_C1LSMqk4aRKtxd6NjOfNONdleVUusmlBk0k0OpgApOQ
+
+
+### OBTENER TODOS LOS USUARIOS CON ROL DEVELOPER (SOLO DEVELOPER)
+GET http://localhost:8080/api/developer
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyODI4OSwiZXhwIjoxNzUzMTE0Njg5fQ.OyJsuoSM28v4eS8tfhqi1EG92c3y2wltEc6R-I4vkA_C1LSMqk4aRKtxd6NjOfNONdleVUusmlBk0k0OpgApOQ
 
 ### OBTENER TODOS LOS PRODUCTOS
 GET http://localhost:8080/api/product
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuaXRvIiwiaWF0IjoxNzUyODk5MTQyLCJleHAiOjE3NTI5ODU1NDJ9.7LJnhz16TgpFa2zp2OPnH1dRpgf2X7sAjVEHONUCJHX_ZI5HLp-OVWUD1E_eODylsz4-2eszo70vm3wr6dktVA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyODI4OSwiZXhwIjoxNzUzMTE0Njg5fQ.OyJsuoSM28v4eS8tfhqi1EG92c3y2wltEc6R-I4vkA_C1LSMqk4aRKtxd6NjOfNONdleVUusmlBk0k0OpgApOQ
 
-
-### OBTENER UN CLIENTE POR ID
-GET http://localhost:8080/api/client/1
-Content-Type: application/json  
-
-
-### ELIMINAR UN CLIENTE
-DELETE http://localhost:8080/api/client/1
-Content-Type: application/json
 
 ### OBTENER TODOS LOS PRODUCTOS
 GET http://localhost:8080/api/product
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyMjkzMiwiZXhwIjoxNzUzMTA5MzMyfQ.ei-YIY-iWqmnLop7fzLYFBhM20Mg43HyxwCbjnnZGF0M_CLb9kPvbcsthFsMtIaJ_0egANPaVHv3R4Mm4cw4rg
 
 
 ### CREAR UN NUEVO PRODUCTO
 POST http://localhost:8080/api/product
 Content-Type: application/json  
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyMjkzMiwiZXhwIjoxNzUzMTA5MzMyfQ.ei-YIY-iWqmnLop7fzLYFBhM20Mg43HyxwCbjnnZGF0M_CLb9kPvbcsthFsMtIaJ_0egANPaVHv3R4Mm4cw4rg
 
 {
-  "name": "producto3",
-  "sku": "sku3",
-  "price": 990.0,
-  "description": "descripcion del producto",
+  "name": "producto4",
+  "sku": "sku4",
+  "price": 1990.0,
+  "description": "descripcion del producto numero 4",
   "stock": 10
 }
 
+### OBTENER TODOS LOS PRODUCTOS (Muestra el nuevo producto)
+GET http://localhost:8080/api/product
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuaXRvIiwiaWF0IjoxNzUzMDI4NTcyLCJleHAiOjE3NTMxMTQ5NzJ9.wOle_Kuud87-DTIk8-ujoPgBrhw1Q-bq6OqjlpGdpqAiVPgZO9jIp4DJpff692fWzktxrVrpa4DhXNnodOpZDA
+
+
 ### CREAR COMPRA (ERROR STOCK INSUFICIENTE)
-POST http://localhost:8080/api/carts
+POST http://localhost:8080/api/cart
 Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuaXRvIiwiaWF0IjoxNzUzMDI4NTcyLCJleHAiOjE3NTMxMTQ5NzJ9.wOle_Kuud87-DTIk8-ujoPgBrhw1Q-bq6OqjlpGdpqAiVPgZO9jIp4DJpff692fWzktxrVrpa4DhXNnodOpZDA
 
 {
-  "clientId": 1,
+  "clientId": 2,
   "items": [
     {
       "productId": 1,
@@ -101,12 +88,13 @@ Content-Type: application/json
   ]
 }
 
-### CREAR COMPRA
-POST http://localhost:8080/api/carts
+### CREAR COMPRA (PRODUCTOS DISPONIBLES)
+POST http://localhost:8080/api/cart
 Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuaXRvIiwiaWF0IjoxNzUzMDI4NTcyLCJleHAiOjE3NTMxMTQ5NzJ9.wOle_Kuud87-DTIk8-ujoPgBrhw1Q-bq6OqjlpGdpqAiVPgZO9jIp4DJpff692fWzktxrVrpa4DhXNnodOpZDA
 
 {
-  "clientId": 1,
+  "clientId": 2,
   "items": [
     {
       "productId": 1,
@@ -119,12 +107,13 @@ Content-Type: application/json
   ]
 }
 
-
-### OBTENER TODAS LAS ORDENES
-GET http://localhost:8080/api/order
+### OBTENER EL DETALLE DE UNA COMPRA
+GET http://localhost:8080/api/cart/orders/1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MzAyODA5NywiZXhwIjoxNzUzMTE0NDk3fQ.-YfyQB-KNoeVcv1sjxpKLi6Y40Bn8Lcr_NFOILcwdYJUHbikFD2u2eHmaryE1gUMe-qn0hT2a8H1n5BSKIyDQw
 
-### OBTENER TODOS LOS CARROS
-GET http://localhost:8080/api/carts/1
-Content-Type: application/json
+
+
+
+
 
